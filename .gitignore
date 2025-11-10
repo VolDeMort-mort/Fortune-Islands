@@ -55,6 +55,9 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
+*.mdb.meta
+/Assets/_Recovery
+/Assets/_Recovery.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt
