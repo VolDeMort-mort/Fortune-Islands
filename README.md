@@ -11,8 +11,14 @@ Surfaces:
 
 Rresources:
 
-Stone: #363636FF - Stone; #737272FF - Stone2; #AA9B6EFF - Desert_stone
+Stone: #363636FF - Stone; #737272FF - Stone2; 
+Desert_stone: #AA9B6EFF
 
 Tree:
 
-Tree_3 - #1A3B2AFF leaf; #45342BFF stump; #7A5C35FF cones
+Main:
+Tree_1 - #38521FFF leaf; #523400FF stump; #7A5C35FF cones
+Tree_2 - #38521FFF leaf; #523400FF stump; #7A5C35FF cones
+
+Winter_tree_1 - #1A3B2AFF leaf; #45342BFF stump; #7A5C35FF cones
+Winter_tree_1 - #1A3B2AFF leaf; #45342BFF stump; #7A5C35FF cones
