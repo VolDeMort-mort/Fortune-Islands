@@ -5,12 +5,14 @@ Surfaces:
 
 #4A9103FF - Grass
 
-#BDAA09FF - Send
+#F6D375FF - Sand
 
-#D3DCE6FF -- Snow
+#D3DCE6FF - Snow
 
 Rresources:
 
-#363636FF - Stone
+Stone: #363636FF - Stone; #737272FF - Stone2; #AA9B6EFF - Desert_stone
 
-#737272FF - Stone2
+Tree:
+
+Tree_3 - #1A3B2AFF leaf; #45342BFF stump; #7A5C35FF cones
