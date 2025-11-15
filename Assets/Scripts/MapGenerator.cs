@@ -245,9 +245,9 @@ public class MapGenerator : MonoBehaviour
             }
 
             bool nearGround = true;
-            for (int i = -1; i < 2 && nearGround; i++)
+            for (int i = -1; i < 4 && nearGround; i++)
             {
-                for (int j = -1; j < 2 && nearGround; j++)
+                for (int j = -1; j < 4 && nearGround; j++)
                 {
                     if (!groundSet.Contains(new Vector2Int(groundPos.x + i, groundPos.y + j)))
                         nearGround = false;
