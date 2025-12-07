@@ -1,323 +1,409 @@
-using System;
 using System.Collections.Generic;
-using Mono.Cecil;
-using Unity.Collections;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class MapGenerator : MonoBehaviour
 {
-
-
-    // UI properties
+    [Header("UI")]
     public Button BtnGenerate;
 
+    [Header("Configuration")]
+    public Transform worldContainer;
+    public Vector2Int mapSize = new Vector2Int(100, 100);
+    public BiomeConfig[] availableBiomes; 
 
-    // Assets properties
-    [Header("Asserts properties")]
-    public GameObject grassGround;
-    public GameObject sandGround;
-    public GameObject winterGround;
-    public GameObject deepWater;
+    [Header("Noise Settings")]
+    public float noiseScale = 25f;
+    [Range(1, 10)] public int noiseOctaves = 4;
+    [Range(0f, 1f)] public float noiseThreshold = 0.4f;
+    public float falloffStrength = 3f;
+    public float islandSizeMultiplier = 1f;
 
-    public GameObject[] treeResource;
-    public GameObject[] mountainResource;
-    public GameObject world;
-
-
-    // // Perlin noise properties
-    // public float noiseFreq;
-
-    // // Voronoi noise properties
-    // public int islandsNumber;
-    // public int blocksPerIsland;
-
-
-
-    [Header("Island Settings")]
-    public Vector3 mapSize;
-    public float noiseSeed;
-    public float noiseScale;
-    [Range(1, 20)] public float noiseOctaves;
-    public float noiseThreshold;
-
-    [Tooltip("Percentage of map that remains at full height before falloff starts (0-1)")]
-    [Range(0f, 0.9f)] public float islandCoreSize = 0.4f;
-
-    [Tooltip("How steep the falloff is - higher = steeper cliffs")]
-    [Range(1f, 10f)] public float falloffStrength = 3.85f;
-
-    [Tooltip("Overall island size multiplier")]
-    [Range(0.1f, 2f)] public float islandSizeMultiplier = 1.25f;
-
-    [Tooltip("Square of 1 island")]
-    public int islandMinSquare = 400;
-    public int islandMaxSquare = 600;
-
-
-    [Header("Cluster Settings")]
+    [Header("Resource Settings")]
     public int treeClusterCount = 5;
     public float treeClusterRadius = 15f;
-    public float treeClusterDensity = 0.7f;
+    public int rockClusterCount = 3;
+    public float rockClusterRadius = 12f;
 
-    public int mountainClusterCount = 3;
-    public float mountainClusterRadius = 12f;
-    public float mountainClusterDensity = 0.5f;
+    [Header("Unit Settings")]
+    public Button BtnSpawnUnit;    // Drag new button here
+    public GameObject villagerPrefab; // Drag villager prefab here
 
-    private List<Vector2Int> groundPositions = new List<Vector2Int>();
-    private List<ResourceCluster> resourceClusters = new List<ResourceCluster>();
+    // The Grid Variable
+    public CellData[,] Grid { get; private set; }
+    
+    private BiomeConfig currentBiome;
+    private List<ResourceCluster> clusters = new List<ResourceCluster>();
 
     void Start()
     {
-        BtnGenerate.onClick.AddListener(GenerateIsland);
+        if (BtnGenerate != null)
+            BtnGenerate.onClick.AddListener(GenerateWorld);
+
+        if (BtnSpawnUnit != null) 
+            BtnSpawnUnit.onClick.AddListener(SpawnVillager);
     }
 
-    void ClearMap()
+    public void GenerateWorld()
     {
-        foreach (Transform child in world.transform)
+        ClearWorld();
+        InitializeGrid();
+        
+        if (availableBiomes.Length > 0)
         {
-            Destroy(child.gameObject);
+            currentBiome = availableBiomes[UnityEngine.Random.Range(0, availableBiomes.Length)];
+            Debug.Log($"Selected Biome: {currentBiome.biomeName}");
+        }
+        else
+        {
+            Debug.LogError("No Biomes assigned in Inspector!");
+            return;
+        }
+
+        // 1. Generate Layer 0 (Terrain Data)
+        GenerateTerrainData();
+        
+        // 2. Generate Layer 1 (Resources Data)
+        GenerateResourceData();
+
+        // 3. Instantiate Visuals based on Data
+        RenderMap();
+    }
+
+    void InitializeGrid()
+    {
+        Grid = new CellData[mapSize.x, mapSize.y];
+        for (int x = 0; x < mapSize.x; x++)
+        {
+            for (int y = 0; y < mapSize.y; y++)
+            {
+                Grid[x, y] = new CellData(x, y);
+            }
         }
     }
 
-    void GenerateIsland()
+    void GenerateTerrainData()
     {
-        int ground_count = 0;
-        int water_count = 0;
-        int attempt_count = 0;
+        float seed = UnityEngine.Random.Range(0f, 10000f);
+        Vector2 offset = new Vector2(seed, seed);
 
-        while (ground_count < islandMinSquare || ground_count > islandMaxSquare)
+        for (int x = 0; x < mapSize.x; x++)
         {
-            ground_count = 0;
-            water_count = 0;
-            attempt_count++;
-            
-            ClearMap();
-            groundPositions.Clear();
-
-            noiseSeed = UnityEngine.Random.Range(1, 999999999);
-            
-            Vector2 org = new Vector2(Mathf.Sqrt(noiseSeed), Mathf.Sqrt(noiseSeed));
-
-            for (int x = 0; x < mapSize.x; x++)
+            for (int y = 0; y < mapSize.y; y++)
             {
-                for (int z = 0; z < mapSize.z; z++)
+                // 1. Calculate Noise + Falloff
+                float noiseVal = GetNoiseValue(x, y, offset);
+                float falloff = GetFalloffValue(x, y);
+                float finalValue = noiseVal - falloff;
+
+                // 2. Determine Type
+                if (finalValue > noiseThreshold)
                 {
-                    Vector3 pos = new Vector3(x, 1, z);
-                    float groundValue = NoiseFunction(x, z, org);
-                    bool isGround = groundValue > noiseThreshold;
-
-                    if (isGround)
-                    {
-                        Instantiate(grassGround, pos, Quaternion.identity, world.transform);
-                        groundPositions.Add(new Vector2Int(x, z));
-                        ground_count++;
-                    }
-                    else
-                    {
-                        Instantiate(deepWater, pos, Quaternion.identity, world.transform);
-                        water_count++;
-
-                    }
+                    Grid[x, y].Type = CellType.Ground;
+                }
+                else
+                {
+                    Grid[x, y].Type = CellType.Water;
                 }
             }
-            if (attempt_count > 100)
+        }
+
+        // 3. Post-Processing: Calculate Bitmask for Edges/Corners
+        for (int x = 0; x < mapSize.x; x++)
+        {
+            for (int y = 0; y < mapSize.y; y++)
             {
-                Debug.Log($"Limit generation attempts reached: {attempt_count}");
-                return;
+                if (Grid[x, y].Type == CellType.Ground)
+                {
+                    CalculateTileVariation(x, y);
+                }
             }
         }
-        Debug.Log($"---Island generation results---" +
-                $"\nGeneration attempts: {attempt_count}" +
-                $"\nGround square: {ground_count}" +
-                $"\nWater square: {water_count}");
-
-        GenerateResourceClusters();
-        PlaceResources();
     }
 
-    float NoiseFunction(int x, int z, Vector2 org)
+    void CalculateTileVariation(int x, int y)
     {
-        float noiseSize = noiseScale;
-        float opacity = 1;
-        float threshold = 0;
+        // Top(1), Right(2), Bottom(4), Left(8)
+        int mask = 0;
+        
+        if (IsGround(x, y + 1)) mask += 1; // Top
+        if (IsGround(x + 1, y)) mask += 2; // Right
+        if (IsGround(x, y - 1)) mask += 4; // Bottom
+        if (IsGround(x - 1, y)) mask += 8; // Left
 
-        // Generate multi-octave noise
-        for (int octave = 0; octave < noiseOctaves; octave++)
+        Grid[x, y].Bitmask = mask;
+
+        switch (mask)
         {
-            float xValue = x / (noiseScale * 100) + org.x;
-            float zValue = z / (noiseScale * 100) + org.y;
+            case 0:
+                Grid[x, y].Variation = TileVariation.Isolated;
+                break;
+            
+            // Tips (1 connection)
+            case 1: case 2: case 4: case 8:
+                Grid[x, y].Variation = TileVariation.Tip;
+                break;
 
-            float y = noise.snoise(new float2(xValue, zValue));
+            // Outer Corners (L-Shapes)
+            case 3: case 6: case 9: case 12:
+                Grid[x, y].Variation = TileVariation.OuterCorner;
+                break;
 
-            threshold += Mathf.InverseLerp(0, 1, y) / opacity;
+            // Edges (3-Sides or Tube)
+            case 7: case 11: case 13: case 14:
+            case 5: case 10:
+                Grid[x, y].Variation = TileVariation.Edge; 
+                break;
 
-            noiseSize /= 2f;
-            opacity *= 2f;
+            // Center or Inner Corner (4 connections)
+            case 15:
+                if (!IsGround(x + 1, y + 1) || !IsGround(x + 1, y - 1) || 
+                    !IsGround(x - 1, y - 1) || !IsGround(x - 1, y + 1))
+                {
+                    Grid[x, y].Variation = TileVariation.InnerCorner;
+                }
+                else
+                {
+                    Grid[x, y].Variation = TileVariation.Center;
+                }
+                break;
         }
-
-        // Apply island falloff gradient
-        float falloff = ImprovedFallOffMap((float)x, (float)z);
-
-        // Subtract falloff - higher falloff = more likely to be water
-        return threshold - falloff;
     }
 
-    float ImprovedFallOffMap(float x, float z)
+    bool IsGround(int nx, int ny) 
     {
-        // Normalize coordinates to -1 to 1 range (center = 0,0)
-        float normX = (x / mapSize.x) * 2f - 1f;
-        float normZ = (z / mapSize.z) * 2f - 1f;
-
-        // Calculate distance from center (0 at center, 1 at corners)
-        float distanceFromCenter = Mathf.Sqrt(normX * normX + normZ * normZ);
-
-        // Apply island size multiplier
-        distanceFromCenter /= islandSizeMultiplier;
-
-        // Calculate falloff with smooth gradient
-        float falloff = 0f;
-
-        if (distanceFromCenter > islandCoreSize)
-        {
-            // Normalize distance for falloff calculation
-            float normalizedDist = (distanceFromCenter - islandCoreSize) / (1f - islandCoreSize);
-
-            // Apply power curve for smooth falloff
-            falloff = Mathf.Pow(normalizedDist, falloffStrength);
-        }
-
-        // Scale falloff to ensure water at edges
-        // Multiply by a value that guarantees water formation
-        return falloff * 2f;
+        if (nx < 0 || nx >= mapSize.x || ny < 0 || ny >= mapSize.y) return false; 
+        return Grid[nx, ny].Type == CellType.Ground;
     }
 
-
-    void GenerateResourceClusters()
+    void GenerateResourceData()
     {
-        resourceClusters.Clear();
-
-        if (groundPositions.Count == 0) return;
+        clusters.Clear();
+        List<Vector2Int> groundTiles = GetGroundTiles();
+        
+        if (groundTiles.Count == 0) return;
 
         for (int i = 0; i < treeClusterCount; i++)
-        {
-            Vector2Int randomGround = groundPositions[UnityEngine.Random.Range(0, groundPositions.Count)];
-            resourceClusters.Add(new ResourceCluster(
-                new Vector2(randomGround.x, randomGround.y),
-                treeClusterRadius,
-                0,
-                treeClusterDensity
-            ));
-        }
+            clusters.Add(new ResourceCluster(GetRandomPos(groundTiles), treeClusterRadius, 0, 0.7f));
+            
+        for (int i = 0; i < rockClusterCount; i++)
+            clusters.Add(new ResourceCluster(GetRandomPos(groundTiles), rockClusterRadius, 1, 0.5f));
 
-        for (int i = 0; i < mountainClusterCount; i++)
+        foreach (var tilePos in groundTiles)
         {
-            Vector2Int randomGround = groundPositions[UnityEngine.Random.Range(0, groundPositions.Count)];
-            resourceClusters.Add(new ResourceCluster(
-                new Vector2(randomGround.x, randomGround.y),
-                mountainClusterRadius,
-                1,
-                mountainClusterDensity
-            ));
+            if (Grid[tilePos.x, tilePos.y].Variation != TileVariation.Center) continue;
+
+            float bestInfluence = 0f;
+            ResourceCluster bestCluster = null;
+
+            foreach (var cluster in clusters)
+            {
+                float influence = cluster.GetInfluence(tilePos.x, tilePos.y);
+                if (influence > bestInfluence)
+                {
+                    bestInfluence = influence;
+                    bestCluster = cluster;
+                }
+            }
+
+            if (bestCluster != null && UnityEngine.Random.value < bestInfluence)
+            {
+                GameObject prefabToSpawn = null;
+                if (bestCluster.resourceType == 0 && currentBiome.trees.Length > 0) 
+                     prefabToSpawn = currentBiome.trees[UnityEngine.Random.Range(0, currentBiome.trees.Length)];
+                else if (bestCluster.resourceType == 1 && currentBiome.rocks.Length > 0)
+                     prefabToSpawn = currentBiome.rocks[UnityEngine.Random.Range(0, currentBiome.rocks.Length)];
+
+                if (prefabToSpawn != null)
+                    Grid[tilePos.x, tilePos.y].OccupyingObject = prefabToSpawn; 
+            }
         }
     }
 
-    void PlaceResources()
+    void RenderMap()
     {
-        HashSet<Vector2Int> groundSet = new HashSet<Vector2Int>(groundPositions);
-
-        foreach (Vector2Int groundPos in groundPositions)
+        for (int x = 0; x < mapSize.x; x++)
         {
-            ResourceCluster strongestCluster = null;
-            float strongestInfluence = 0f;
-
-            foreach (ResourceCluster cluster in resourceClusters)
+            for (int y = 0; y < mapSize.y; y++)
             {
-                float influence = cluster.GetInfluence(groundPos.x, groundPos.y);
-                if (influence > strongestInfluence)
+                CellData cell = Grid[x, y];
+                Vector3 pos = new Vector3(x, 0, y);
+
+                // --- Layer 0: Surface ---
+                GameObject groundPrefab = currentBiome.deepWater;
+                Quaternion rotation = Quaternion.identity;
+
+                if (cell.Type == CellType.Ground)
                 {
-                    strongestInfluence = influence;
-                    strongestCluster = cluster;
-                }
-            }
+                    switch (cell.Variation)
+                    {
+                        case TileVariation.Center:      groundPrefab = currentBiome.groundCenter; break;
+                        case TileVariation.InnerCorner: groundPrefab = currentBiome.groundInnerCorner; break;
+                        case TileVariation.OuterCorner: groundPrefab = currentBiome.groundOuterCorner; break;
+                        case TileVariation.Edge:        groundPrefab = currentBiome.groundEdge; break;
+                        case TileVariation.Tip:         groundPrefab = currentBiome.groundTip; break;
+                        case TileVariation.Isolated:    groundPrefab = currentBiome.groundIsolated; break;
+                        default:                        groundPrefab = currentBiome.groundCenter; break;
+                    }
+                    pos = new Vector3(x, 0.15f, y);
 
-            bool nearGround = true;
-            for (int i = -1; i < 4 && nearGround; i++)
-            {
-                for (int j = -1; j < 4 && nearGround; j++)
+                    // Calculate Rotation
+                    rotation = GetRotationForCell(x, y, cell.Bitmask, cell.Variation);
+                }
+
+                // FIXED: Now using 'rotation' instead of Quaternion.identity
+                GameObject groundObj = Instantiate(groundPrefab, pos, rotation, worldContainer);
+
+                // --- Layer 1: Resources ---
+                if (cell.OccupyingObject != null)
                 {
-                    if (!groundSet.Contains(new Vector2Int(groundPos.x + i, groundPos.y + j)))
-                        nearGround = false;
+                    Vector3 resPos = new Vector3(x, 1, y);
+                    GameObject resourceObj = Instantiate(cell.OccupyingObject, resPos, Quaternion.identity, worldContainer);
+                    cell.OccupyingObject = resourceObj; 
                 }
-            }
-
-            // bool nearGround = groundSet.Contains(new Vector2Int(groundPos.x + 1, groundPos.y + 1)) &&
-            //         groundSet.Contains(new Vector2Int(groundPos.x + 1, groundPos.y - 1)) &&
-            //         groundSet.Contains(new Vector2Int(groundPos.x - 1, groundPos.y + 1)) &&
-            //         groundSet.Contains(new Vector2Int(groundPos.x - 1, groundPos.y - 1)) &&
-            //         groundSet.Contains(new Vector2Int(groundPos.x - 1, groundPos.y)) &&
-            //         groundSet.Contains(new Vector2Int(groundPos.x + 1, groundPos.y)) &&
-            //         groundSet.Contains(new Vector2Int(groundPos.x, groundPos.y - 1)) &&
-            //         groundSet.Contains(new Vector2Int(groundPos.x, groundPos.y - 1));
-
-            if (strongestCluster != null && UnityEngine.Random.value < strongestInfluence && nearGround)
-            {
-                    Vector3 resourcePos = new Vector3(groundPos.x + (float)0.5, (float)1.75, groundPos.y + (float)0.5);
-
-                    if (strongestCluster.resourceType == 0 && treeResource != null && treeResource.Length > 0)
-                    {
-                        int treeIndex = UnityEngine.Random.Range(0, treeResource.Length);
-                        Instantiate(treeResource[treeIndex], resourcePos, Quaternion.identity, world.transform);
-                    }
-                    else if (strongestCluster.resourceType == 1 && mountainResource != null && mountainResource.Length > 0)
-                    {
-                        int mountainIndex = UnityEngine.Random.Range(0, mountainResource.Length);
-                        Instantiate(mountainResource[mountainIndex], resourcePos, Quaternion.identity, world.transform);
-                    }
             }
         }
+    }
+
+    Quaternion GetRotationForCell(int x, int y, int mask, TileVariation variation)
+    {
+        float angle = 0f;
+
+        switch (variation)
+        {
+            case TileVariation.Tip:
+                if (mask == 1) angle = 0f;   
+                if (mask == 2) angle = 90f;  
+                if (mask == 4) angle = 180f; 
+                if (mask == 8) angle = 270f; 
+                break;
+
+            case TileVariation.OuterCorner:
+                if (mask == 3)  angle = 0f;   
+                if (mask == 6)  angle = 90f;  
+                if (mask == 12) angle = 180f; 
+                if (mask == 9)  angle = 270f; 
+                break;
+
+            case TileVariation.Edge:
+                if (mask == 14) angle = 180f; // Missing Bottom
+                if (mask == 13) angle = 270f; // Missing Right
+                if (mask == 11) angle = 0f;   // Missing Top
+                if (mask == 7)  angle = 90f;  // Missing Left
+                if (mask == 5)  angle = 0f;   // Tube Vertical
+                if (mask == 10) angle = 90f;  // Tube Horizontal
+                break;
+
+            case TileVariation.InnerCorner:
+                bool tr = IsGround(x + 1, y + 1);
+                bool br = IsGround(x + 1, y - 1);
+                bool bl = IsGround(x - 1, y - 1);
+                bool tl = IsGround(x - 1, y + 1);
+
+                if (!tr) angle = 0f;    
+                else if (!br) angle = 90f;   
+                else if (!bl) angle = 180f;  
+                else if (!tl) angle = 270f;  
+                break;
+        }
+
+        return Quaternion.Euler(0, angle - 90f, 0);
+    }
+
+    // --- Helpers ---
+
+    float GetNoiseValue(int x, int y, Vector2 offset)
+    {
+        float noiseVal = 0;
+        float scale = noiseScale;
+        float opacity = 1;
+        float norm = 0;
+
+        for (int i = 0; i < noiseOctaves; i++)
+        {
+            float xCoord = (x / scale) + offset.x;
+            float yCoord = (y / scale) + offset.y;
+            // Requires "Unity.Mathematics" package installed via Package Manager
+            noiseVal += noise.snoise(new float2(xCoord, yCoord)) * opacity;
+            norm += opacity;
+            scale /= 2f;
+            opacity *= 0.5f;
+        }
+        return Mathf.InverseLerp(-1, 1, noiseVal / norm);
+    }
+
+    float GetFalloffValue(int x, int y)
+    {
+        float xv = x / (float)mapSize.x * 2 - 1;
+        float yv = y / (float)mapSize.y * 2 - 1;
+        float v = Mathf.Max(Mathf.Abs(xv), Mathf.Abs(yv));
+        
+        float a = falloffStrength;
+        float b = islandSizeMultiplier; 
+        return Mathf.Pow(v, a) / (Mathf.Pow(v, a) + Mathf.Pow(b - b * v, a));
+    }
+
+    List<Vector2Int> GetGroundTiles()
+    {
+        List<Vector2Int> list = new List<Vector2Int>();
+        for (int x = 0; x < mapSize.x; x++)
+        {
+            for (int y = 0; y < mapSize.y; y++)
+            {
+                if (Grid[x, y].Type == CellType.Ground) list.Add(new Vector2Int(x, y));
+            }
+        }
+        return list;
+    }
+
+    Vector2 GetRandomPos(List<Vector2Int> points)
+    {
+        Vector2Int p = points[UnityEngine.Random.Range(0, points.Count)];
+        return new Vector2(p.x, p.y);
+    }
+
+    void ClearWorld()
+    {
+        for (int i = worldContainer.childCount - 1; i >= 0; i--)
+        {
+            Destroy(worldContainer.GetChild(i).gameObject);
+        }
+    }
+
+    void SpawnVillager()
+    {
+        if (Grid == null)
+        {
+            Debug.LogError("Generate the map first!");
+            return;
+        }
+
+        // Try 100 times to find a random empty spot
+        for (int i = 0; i < 100; i++)
+        {
+            int rx = UnityEngine.Random.Range(0, mapSize.x);
+            int ry = UnityEngine.Random.Range(0, mapSize.y);
+            CellData cell = Grid[rx, ry];
+
+            // Check if valid spawn point (Ground + No Tree/Rock + No other Villager)
+            if (cell.Type == CellType.Ground && cell.OccupyingObject == null)
+            {
+                // Instantiate
+                Vector3 spawnPos = new Vector3(rx, 2f, ry);
+                GameObject unitObj = Instantiate(villagerPrefab, spawnPos, Quaternion.identity, worldContainer);
+                
+                // Initialize the AI
+                VillagerController controller = unitObj.GetComponent<VillagerController>();
+                if (controller != null)
+                {
+                    controller.Initialize(this, new Vector2Int(rx, ry));
+                }
+                
+                Debug.Log($"Spawned Villager at {rx}, {ry}");
+                return; // Success, exit function
+            }
+        }
+        Debug.LogWarning("Could not find empty spot for Villager.");
     }
 }
-//     void MakeIslandsMap()
-//     {
-//         ClearMap();
-//         blocksPerIsland = (int)(islandsNumber) * 2;
-
-
-//         for (int x = 0; x < mapSize.x; x += blocksPerIsland)
-//         {
-//             for (int z = 0; z < mapSize.x; z += blocksPerIsland)
-//             {
-//                 Vector3 pos = new Vector3(x + UnityEngine.Random.Range(0, blocksPerIsland), mapSize.y,
-//                 z + UnityEngine.Random.Range(0, blocksPerIsland));
-//                 Instantiate(grassGround, pos, Quaternion.identity, world.transform);
-//             }
-//         }
-//     }
-
-
-//     void MakePerlinMap()
-//     {
-//         ClearMap();
-//         noiseSeed = UnityEngine.Random.Range(1, 10000);
-
-
-//         for (int x = 0; x < mapSize.x; x++)
-//         {
-//             for (int z = 0; z < mapSize.z; z++)
-//             {
-//                 Vector3 pos = new Vector3(x, mapSize.y, z);
-
-
-//                 double groundValue = Mathf.PerlinNoise((pos.x + noiseSeed) / noiseFreq, (pos.z + noiseSeed) / noiseFreq);
-//                 bool isGround = groundValue < noiseThreshold;
-//                 if (!isGround) Instantiate(deepWater, pos, Quaternion.identity, world.transform);
-//                 else { Instantiate(grassGround, pos, Quaternion.identity, world.transform); }
-//             }
-
-//         }
-//     }
-// }
