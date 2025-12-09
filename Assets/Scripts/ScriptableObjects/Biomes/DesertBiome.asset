@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ec33a16b384f949992a1c72202514a, type: 3}
+  m_Name: DesertBiome
+  m_EditorClassIdentifier: Assembly-CSharp::BiomeConfig
+  biomeName: Desert_biome
+  deepWater: {fileID: 6025741128080247136, guid: a9c8d36aec389cb4c9316be9eccf2852, type: 3}
+  groundCenter: {fileID: 4703991316657249933, guid: 5d8be394ae5f39b4eb9c315dd3ae367f, type: 3}
+  groundInnerCorner: {fileID: 5520656929242987164, guid: 783d6ea7a32290142bfe344748d2573f, type: 3}
+  groundOuterCorner: {fileID: 5520656929242987164, guid: 783d6ea7a32290142bfe344748d2573f, type: 3}
+  groundEdge: {fileID: 2304952660141657919, guid: 227dffee83ab0e741b94b980ba373cff, type: 3}
+  groundTip: {fileID: 4703991316657249933, guid: 5d8be394ae5f39b4eb9c315dd3ae367f, type: 3}
+  groundIsolated: {fileID: 4703991316657249933, guid: 5d8be394ae5f39b4eb9c315dd3ae367f, type: 3}
+  treesPrefabs:
+  - {fileID: 1577758135711081347, guid: 15fce40177145c447a16c0ca712299e0, type: 3}
+  - {fileID: 9070316395969997628, guid: 5f9d10e346226984c89e719b055c1630, type: 3}
+  rocksPrefab:
+  - {fileID: 933229855892661973, guid: fb985b9cde3cb244db89de7d5767c1ec, type: 3}
+  - {fileID: 215375638050317291, guid: 3cf368127daefce48b44dbcfc51939b6, type: 3}
+  goldsPrefab:
+  - {fileID: 1448898870092860027, guid: 966934a08f9015546a3ca6c9fcb5200c, type: 3}
+  - {fileID: 316861112214417500, guid: b7b6a757094cd2a4392b8f7c145bd4c3, type: 3}
+  grassPrefabs:
+  - {fileID: 6262408227047756619, guid: 0a460277215584d4f971d127f8a1c42b, type: 3}
+  - {fileID: 941989975332428091, guid: 2211c8c540130ad468be2a32197d32e1, type: 3}

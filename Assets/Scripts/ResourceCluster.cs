@@ -1,12 +1,13 @@
 using UnityEngine;
+
 public class ResourceCluster
 {
     public Vector2 center;
     public float radius;
-    public int resourceType; // 0 = tree, 1 = mountain
     public float density;
+    public ResourceType resourceType; // 0 = Tree, 1 = Rock
 
-    public ResourceCluster(Vector2 center, float radius, int type, float density)
+    public ResourceCluster(Vector2 center, float radius, ResourceType type, float density)
     {
         this.center = center;
         this.radius = radius;
@@ -14,7 +15,7 @@ public class ResourceCluster
         this.density = density;
     }
 
-    public float GetInfluence(float x, float z)
+    public float GetInfluence(int x, int z)
     {
         float dx = x - center.x;
         float dz = z - center.y;

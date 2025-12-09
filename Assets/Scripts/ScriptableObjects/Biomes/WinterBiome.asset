@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ec33a16b384f949992a1c72202514a, type: 3}
+  m_Name: WinterBiome
+  m_EditorClassIdentifier: Assembly-CSharp::BiomeConfig
+  biomeName: Winter_biome
+  deepWater: {fileID: 6025741128080247136, guid: a9c8d36aec389cb4c9316be9eccf2852, type: 3}
+  groundCenter: {fileID: 919132149155446097, guid: 0a7ed74425344ad4fa409bc1fae07242, type: 3}
+  groundInnerCorner: {fileID: 919132149155446097, guid: 3389e82763c49cc45b81db90fc045782, type: 3}
+  groundOuterCorner: {fileID: 919132149155446097, guid: 3389e82763c49cc45b81db90fc045782, type: 3}
+  groundEdge: {fileID: 919132149155446097, guid: 60c6c5d40829cbb4ba0c95edba73ee34, type: 3}
+  groundTip: {fileID: 919132149155446097, guid: 0a7ed74425344ad4fa409bc1fae07242, type: 3}
+  groundIsolated: {fileID: 919132149155446097, guid: 0a7ed74425344ad4fa409bc1fae07242, type: 3}
+  treesPrefabs:
+  - {fileID: 892875123539173657, guid: 6a2e1aa6dae343640ba4333ab178e1ff, type: 3}
+  - {fileID: 4083015108753271637, guid: c321c02672b708740a312d3e426a0ba0, type: 3}
+  rocksPrefab:
+  - {fileID: 9098372445632920746, guid: e0e3a2a5fce1bdf4b8f422bf66a7419d, type: 3}
+  - {fileID: 5855330142500161652, guid: e02c03bc2a0eda44fbca233d17a7e0f6, type: 3}
+  goldsPrefab:
+  - {fileID: 5255651349835760389, guid: 976da66dd8ffd5a489d3eeb3a90e4128, type: 3}
+  - {fileID: 1486499820566766012, guid: fc46bfa645f06ed4eb0f83a51080ecf7, type: 3}
+  grassPrefabs:
+  - {fileID: 3807321834727803474, guid: d99fce1a4e0efb24c9e2c62448d33626, type: 3}
