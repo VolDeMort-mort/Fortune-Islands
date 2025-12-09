@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,9 +23,18 @@ public class MapGenerator : MonoBehaviour
 
     [Header("Resource Settings")]
     public int treeClusterCount = 5;
-    public float treeClusterRadius = 15f;
+    public float treeClusterRadius = 5f;
+    [Range(0f, 1f)]public float treeClusterDensity = 0.5f;
     public int rockClusterCount = 3;
-    public float rockClusterRadius = 12f;
+    public float rockClusterRadius = 5f;
+    [Range(0f, 1f)]public float rockClusterDensity = 0.5f;
+
+    public int goldClusterCount = 1;
+    public float goldClusterRadius = 2f;
+    [Range(0f, 1f)]public float goldClusterDensity = 0.5f;
+
+
+    [Range(0f, 1f)]public float grassDensity = 0.2f;
 
     [Header("Unit Settings")]
     public Button BtnSpawnUnit;    // Drag new button here
@@ -65,12 +75,24 @@ public class MapGenerator : MonoBehaviour
         GenerateTerrainData();
         
         // 2. Generate Layer 1 (Resources Data)
+        ClearResources();
         GenerateResourceData();
 
         // 3. Instantiate Visuals based on Data
         RenderMap();
+        for (int x = 0; x < mapSize.x; x++)
+        {
+            for (int y = 0; y < mapSize.y; y++)
+            {
+                Debug.LogError($"{x}, {y}: {Grid[x, y].Type}, {Grid[x,y].OccupyingObject}");
+                Grid[x, y] = null;
+            }
+        }
+
+        
     }
 
+    // Map
     void InitializeGrid()
     {
         Grid = new CellData[mapSize.x, mapSize.y];
@@ -83,6 +105,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    // Map class
     void GenerateTerrainData()
     {
         float seed = UnityEngine.Random.Range(0f, 10000f);
@@ -121,7 +144,8 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
-
+    
+    // Map class
     void CalculateTileVariation(int x, int y)
     {
         // Top(1), Right(2), Bottom(4), Left(8)
@@ -171,56 +195,37 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    // Map class
     bool IsGround(int nx, int ny) 
     {
         if (nx < 0 || nx >= mapSize.x || ny < 0 || ny >= mapSize.y) return false; 
         return Grid[nx, ny].Type == CellType.Ground;
     }
 
+    // Map class
     void GenerateResourceData()
     {
-        clusters.Clear();
         List<Vector2Int> groundTiles = GetGroundTiles();
-        
         if (groundTiles.Count == 0) return;
 
-        for (int i = 0; i < treeClusterCount; i++)
-            clusters.Add(new ResourceCluster(GetRandomPos(groundTiles), treeClusterRadius, 0, 0.7f));
-            
-        for (int i = 0; i < rockClusterCount; i++)
-            clusters.Add(new ResourceCluster(GetRandomPos(groundTiles), rockClusterRadius, 1, 0.5f));
+        List<IGenerationPattern> generationSteps = new List<IGenerationPattern>();
 
-        foreach (var tilePos in groundTiles)
+        generationSteps.Add(new ClusterPattern(ResourceType.Tree,treeClusterCount, treeClusterRadius, treeClusterDensity));
+        
+        generationSteps.Add(new ClusterPattern(ResourceType.Rock, rockClusterCount, rockClusterRadius, rockClusterDensity));
+        
+        generationSteps.Add(new ClusterPattern(ResourceType.Gold, goldClusterCount, goldClusterRadius, goldClusterDensity));
+
+        generationSteps.Add(new RandomPattern(ResourceType.Grass, grassDensity, true));
+
+
+        foreach (var pattern in generationSteps)
         {
-            if (Grid[tilePos.x, tilePos.y].Variation != TileVariation.Center) continue;
-
-            float bestInfluence = 0f;
-            ResourceCluster bestCluster = null;
-
-            foreach (var cluster in clusters)
-            {
-                float influence = cluster.GetInfluence(tilePos.x, tilePos.y);
-                if (influence > bestInfluence)
-                {
-                    bestInfluence = influence;
-                    bestCluster = cluster;
-                }
-            }
-
-            if (bestCluster != null && UnityEngine.Random.value < bestInfluence)
-            {
-                GameObject prefabToSpawn = null;
-                if (bestCluster.resourceType == 0 && currentBiome.trees.Length > 0) 
-                     prefabToSpawn = currentBiome.trees[UnityEngine.Random.Range(0, currentBiome.trees.Length)];
-                else if (bestCluster.resourceType == 1 && currentBiome.rocks.Length > 0)
-                     prefabToSpawn = currentBiome.rocks[UnityEngine.Random.Range(0, currentBiome.rocks.Length)];
-
-                if (prefabToSpawn != null)
-                    Grid[tilePos.x, tilePos.y].OccupyingObject = prefabToSpawn; 
-            }
+            pattern.Generate(Grid, groundTiles, currentBiome);
         }
     }
 
+    // Map class
     void RenderMap()
     {
         for (int x = 0; x < mapSize.x; x++)
@@ -228,44 +233,46 @@ public class MapGenerator : MonoBehaviour
             for (int y = 0; y < mapSize.y; y++)
             {
                 CellData cell = Grid[x, y];
-                Vector3 pos = new Vector3(x, 0, y);
+                Vector3 pos = new Vector3(0, 0, 0);
 
                 // --- Layer 0: Surface ---
-                GameObject groundPrefab = currentBiome.deepWater;
+                GameObject surfacePrefab = null;
                 Quaternion rotation = Quaternion.identity;
 
                 if (cell.Type == CellType.Ground)
                 {
+                    pos = new Vector3(x, 0.15f, y);
+                    rotation = GetRotationForCell(x, y, cell.Bitmask, cell.Variation);
                     switch (cell.Variation)
                     {
-                        case TileVariation.Center:      groundPrefab = currentBiome.groundCenter; break;
-                        case TileVariation.InnerCorner: groundPrefab = currentBiome.groundInnerCorner; break;
-                        case TileVariation.OuterCorner: groundPrefab = currentBiome.groundOuterCorner; break;
-                        case TileVariation.Edge:        groundPrefab = currentBiome.groundEdge; break;
-                        case TileVariation.Tip:         groundPrefab = currentBiome.groundTip; break;
-                        case TileVariation.Isolated:    groundPrefab = currentBiome.groundIsolated; break;
-                        default:                        groundPrefab = currentBiome.groundCenter; break;
+                        case TileVariation.Center:      surfacePrefab = currentBiome.groundCenter; break;
+                        case TileVariation.InnerCorner: surfacePrefab = currentBiome.groundInnerCorner; break;
+                        case TileVariation.OuterCorner: surfacePrefab = currentBiome.groundOuterCorner; break;
+                        case TileVariation.Edge:        surfacePrefab = currentBiome.groundEdge; break;
+                        case TileVariation.Tip:         surfacePrefab = currentBiome.groundTip; break;
+                        case TileVariation.Isolated:    surfacePrefab = currentBiome.groundIsolated; break;
+                        default:                        surfacePrefab = currentBiome.groundCenter; break;
                     }
-                    pos = new Vector3(x, 0.15f, y);
 
-                    // Calculate Rotation
-                    rotation = GetRotationForCell(x, y, cell.Bitmask, cell.Variation);
+                    // --- Layer 1: Resources ---
+                    if (cell.OccupyingObject != null)
+                    {
+                        Instantiate(cell.OccupyingObject, new Vector3(x, 1, y), Quaternion.identity, worldContainer);
+                        // cell.OccupyingObject = resourceObj; 
+                    }
                 }
-
-                // FIXED: Now using 'rotation' instead of Quaternion.identity
-                GameObject groundObj = Instantiate(groundPrefab, pos, rotation, worldContainer);
-
-                // --- Layer 1: Resources ---
-                if (cell.OccupyingObject != null)
+                else if(cell.Type == CellType.Water)
                 {
-                    Vector3 resPos = new Vector3(x, 1, y);
-                    GameObject resourceObj = Instantiate(cell.OccupyingObject, resPos, Quaternion.identity, worldContainer);
-                    cell.OccupyingObject = resourceObj; 
+                    pos = new Vector3(x, 0, y);
+                    surfacePrefab = currentBiome.deepWater;
                 }
+
+                Instantiate(surfacePrefab, pos, rotation, worldContainer);
             }
         }
     }
 
+    // Map class
     Quaternion GetRotationForCell(int x, int y, int mask, TileVariation variation)
     {
         float angle = 0f;
@@ -344,6 +351,8 @@ public class MapGenerator : MonoBehaviour
         return Mathf.Pow(v, a) / (Mathf.Pow(v, a) + Mathf.Pow(b - b * v, a));
     }
 
+
+    // Map
     List<Vector2Int> GetGroundTiles()
     {
         List<Vector2Int> list = new List<Vector2Int>();
@@ -357,12 +366,7 @@ public class MapGenerator : MonoBehaviour
         return list;
     }
 
-    Vector2 GetRandomPos(List<Vector2Int> points)
-    {
-        Vector2Int p = points[UnityEngine.Random.Range(0, points.Count)];
-        return new Vector2(p.x, p.y);
-    }
-
+    // Map
     void ClearWorld()
     {
         for (int i = worldContainer.childCount - 1; i >= 0; i--)
@@ -370,7 +374,32 @@ public class MapGenerator : MonoBehaviour
             Destroy(worldContainer.GetChild(i).gameObject);
         }
     }
+    void ClearGrid()
+    {
+        for (int x = 0; x < mapSize.x; x++)
+        {
+            for (int y = 0; y < mapSize.y; y++)
+            {
+                Grid[x, y] = null;
+            }
+        }
+    }
 
+    void ClearResources()
+    {
+        for (int x = 0; x < mapSize.x; x++)
+        {
+            for (int y = 0; y < mapSize.y; y++)
+            {
+                if (Grid[x, y].OccupyingObject != null){
+                    Destroy(Grid[x, y].OccupyingObject);
+                    Grid[x, y].OccupyingObject = null;
+                }
+            }
+        }
+    }
+
+    // General
     void SpawnVillager()
     {
         if (Grid == null)

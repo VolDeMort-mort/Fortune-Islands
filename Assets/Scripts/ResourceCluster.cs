@@ -5,9 +5,9 @@ public class ResourceCluster
     public Vector2 center;
     public float radius;
     public float density;
-    public int resourceType; // 0 = Tree, 1 = Rock
+    public ResourceType resourceType; // 0 = Tree, 1 = Rock
 
-    public ResourceCluster(Vector2 center, float radius, int type, float density)
+    public ResourceCluster(Vector2 center, float radius, ResourceType type, float density)
     {
         this.center = center;
         this.radius = radius;

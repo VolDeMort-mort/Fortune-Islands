@@ -13,16 +13,21 @@ MonoBehaviour:
   m_Name: GrassBiome
   m_EditorClassIdentifier: Assembly-CSharp::BiomeConfig
   biomeName: Grass_biome
-  deepWater: {fileID: 2734627946545479046, guid: b465c0cfb9e82be49a948dbbff5d7ef6, type: 3}
-  groundCenter: {fileID: 919132149155446097, guid: 2dd971f9f55f14a4fa11bf94c1263eb4, type: 3}
+  deepWater: {fileID: 6025741128080247136, guid: a9c8d36aec389cb4c9316be9eccf2852, type: 3}
+  groundCenter: {fileID: 7427579769878243548, guid: 06cce81b8149fdc44906bafd5e4a0eb6, type: 3}
   groundInnerCorner: {fileID: 919132149155446097, guid: 6fc20ce795c253d46bcffd86921ee3c1, type: 3}
   groundOuterCorner: {fileID: 919132149155446097, guid: 6fc20ce795c253d46bcffd86921ee3c1, type: 3}
   groundEdge: {fileID: 919132149155446097, guid: de6b53a2fc48fad44abc39e06d58d75c, type: 3}
   groundTip: {fileID: 919132149155446097, guid: 2dd971f9f55f14a4fa11bf94c1263eb4, type: 3}
   groundIsolated: {fileID: 919132149155446097, guid: 2dd971f9f55f14a4fa11bf94c1263eb4, type: 3}
-  trees:
-  - {fileID: 919132149155446097, guid: dfe46da7054eaa541bde465ccb0cbee4, type: 3}
-  - {fileID: 919132149155446097, guid: 35ea447dc6c400041932a18f0e232570, type: 3}
-  rocks:
-  - {fileID: 919132149155446097, guid: 17bc32bd32e1cb5489260d191da835be, type: 3}
-  - {fileID: 919132149155446097, guid: ab62201412fc29b4ca1b8c1924d40ff8, type: 3}
+  treesPrefabs:
+  - {fileID: 5135311774963901870, guid: 4a51d9d9d6bfa344ba790a0a76240e29, type: 3}
+  - {fileID: 5260633341300296115, guid: 69a2a7576d58fc943a2b389812469260, type: 3}
+  rocksPrefab:
+  - {fileID: 7481871656118579931, guid: 427cbc8c82ce3954cbec36bbf960ea44, type: 3}
+  - {fileID: 4415651236981727211, guid: 28353d9a9c7fef64ca93f399bc235b98, type: 3}
+  goldsPrefab:
+  - {fileID: 2796995271972878470, guid: bb2b0b62793e2da46b66cf75bcb5ad6d, type: 3}
+  - {fileID: 5430061714822664975, guid: 695cc400d8a29224bba467b76611c17c, type: 3}
+  grassPrefabs:
+  - {fileID: 5566556257117362571, guid: 8244ceea1ee64164da4b488220c6e0f4, type: 3}
