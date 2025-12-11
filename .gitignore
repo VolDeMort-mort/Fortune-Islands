@@ -80,4 +80,6 @@ crashlytics-build.properties
 /Assets/_Recovery.meta
 /Assets/_Recovery/
 
+*.cs.meta
+
 # End of https://www.toptal.com/developers/gitignore/api/unity

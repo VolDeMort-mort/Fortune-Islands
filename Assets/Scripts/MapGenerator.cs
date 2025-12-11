@@ -44,13 +44,13 @@ public class MapGenerator : MonoBehaviour
     public CellData[,] Grid { get; private set; }
     
     private BiomeConfig currentBiome;
-    private List<ResourceCluster> clusters = new List<ResourceCluster>();
 
     void Start()
     {
-        if (BtnGenerate != null)
-            BtnGenerate.onClick.AddListener(GenerateWorld);
-
+        // if (BtnGenerate != null)
+            // BtnGenerate.onClick.AddListener(GenerateWorld);
+        GenerateWorld();
+        SpawnVillager();
         if (BtnSpawnUnit != null) 
             BtnSpawnUnit.onClick.AddListener(SpawnVillager);
     }
@@ -79,17 +79,7 @@ public class MapGenerator : MonoBehaviour
         GenerateResourceData();
 
         // 3. Instantiate Visuals based on Data
-        RenderMap();
-        for (int x = 0; x < mapSize.x; x++)
-        {
-            for (int y = 0; y < mapSize.y; y++)
-            {
-                Debug.LogError($"{x}, {y}: {Grid[x, y].Type}, {Grid[x,y].OccupyingObject}");
-                Grid[x, y] = null;
-            }
-        }
-
-        
+        RenderMap();     
     }
 
     // Map
@@ -257,7 +247,7 @@ public class MapGenerator : MonoBehaviour
                     // --- Layer 1: Resources ---
                     if (cell.OccupyingObject != null)
                     {
-                        Instantiate(cell.OccupyingObject, new Vector3(x, 1, y), Quaternion.identity, worldContainer);
+                        Instantiate(cell.OccupyingObject, new Vector3(x, 1f, y), Quaternion.identity, worldContainer);
                         // cell.OccupyingObject = resourceObj; 
                     }
                 }
