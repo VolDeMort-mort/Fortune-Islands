@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00ec33a16b384f949992a1c72202514a, type: 3}
   m_Name: DesertBiome
   m_EditorClassIdentifier: Assembly-CSharp::BiomeConfig
-  biomeName: Desert_biome
-  deepWater: {fileID: 6025741128080247136, guid: a9c8d36aec389cb4c9316be9eccf2852, type: 3}
+  biomeName: Desert biome
+  deepWater: {fileID: 2290437110376421325, guid: 3216ef4c59fa3e64985d839d56c803d4, type: 3}
   groundCenter: {fileID: 4703991316657249933, guid: 5d8be394ae5f39b4eb9c315dd3ae367f, type: 3}
-  groundInnerCorner: {fileID: 5520656929242987164, guid: 783d6ea7a32290142bfe344748d2573f, type: 3}
+  groundInnerCorner: {fileID: 4703991316657249933, guid: 5d8be394ae5f39b4eb9c315dd3ae367f, type: 3}
   groundOuterCorner: {fileID: 5520656929242987164, guid: 783d6ea7a32290142bfe344748d2573f, type: 3}
   groundEdge: {fileID: 2304952660141657919, guid: 227dffee83ab0e741b94b980ba373cff, type: 3}
-  groundTip: {fileID: 4703991316657249933, guid: 5d8be394ae5f39b4eb9c315dd3ae367f, type: 3}
-  groundIsolated: {fileID: 4703991316657249933, guid: 5d8be394ae5f39b4eb9c315dd3ae367f, type: 3}
+  groundTip: {fileID: 766486971961561938, guid: fd18bfe6a18af8845a0f404f478850e5, type: 3}
+  groundIsolated: {fileID: 766486971961561938, guid: fd18bfe6a18af8845a0f404f478850e5, type: 3}
   treesPrefabs:
   - {fileID: 1577758135711081347, guid: 15fce40177145c447a16c0ca712299e0, type: 3}
   - {fileID: 9070316395969997628, guid: 5f9d10e346226984c89e719b055c1630, type: 3}
