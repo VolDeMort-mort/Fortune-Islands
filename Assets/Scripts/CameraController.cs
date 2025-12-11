@@ -7,6 +7,13 @@ public class CameraController : MonoBehaviour
     public float moveSpeed = 10.0f;
     public float sprintSpeed = 30.0f;
 
+    [Header("View Limits")]
+    [Tooltip("How far down can you look? (e.g. 90)")]
+    public float maxVerticalAngle = 90.0f; 
+    
+    [Tooltip("How far up can you look? (e.g. -90)")]
+    public float minVerticalAngle = -90.0f;
+
     private float rotationX = 0.0f;
     private float rotationY = 0.0f;
 
@@ -15,43 +22,47 @@ public class CameraController : MonoBehaviour
         Vector3 rot = transform.localRotation.eulerAngles;
         rotationY = rot.y;
         rotationX = rot.x;
+
+        // BUG FIX: Unity reads angles as 0-360. 
+        // If your camera starts looking slightly up (e.g., 350 degrees), 
+        // the Clamp will snap it to 90 immediately.
+        // This converts 350 -> -10 so the math works smoothly.
+        if (rotationX > 180) rotationX -= 360;
     }
 
     void Update()
     {
-        // 1. Поворот камери (Права кнопка миші затиснута)
+        // 1. Camera Rotation
         if (Input.GetMouseButton(1)) 
         {
-            // Приховуємо курсор для зручності
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
             rotationY += Input.GetAxis("Mouse X") * lookSpeed;
             rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
             
-            // Обмежуємо погляд вгору/вниз, щоб не зламати шию
-            rotationX = Mathf.Clamp(rotationX, -90, 90);
+            rotationX = Mathf.Clamp(rotationX, minVerticalAngle, maxVerticalAngle);
 
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
         }
         else
         {
-            // Повертаємо курсор, коли кнопка відпущена
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
-        // 2. Рух (WASD)
+        // 2. Movement (Standard Transform, No Physics)
         float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : moveSpeed;
         
         Vector3 moveDir = Vector3.zero;
 
+        // Note: I cleaned up the Arrow Key mapping (you had UpArrow for everything)
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) moveDir += transform.forward;
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.UpArrow)) moveDir -= transform.forward;
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.UpArrow)) moveDir -= transform.right;
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.UpArrow)) moveDir += transform.right;
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) moveDir -= transform.forward;
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) moveDir -= transform.right;
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) moveDir += transform.right;
 
-        // 3. Рух вгору/вниз (Q / E)
+        // 3. Up/Down Movement
         if (Input.GetKey(KeyCode.E)) moveDir += Vector3.up;
         if (Input.GetKey(KeyCode.Q)) moveDir -= Vector3.up;
 
