@@ -1061,7 +1061,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
   BtnGenerate: {fileID: 0}
-  mapSize: {x: 50, y: 50}
+  BtnSpawnUnit: {fileID: 0}
+  mapSize: {x: 100, y: 100}
   worldContainer: {fileID: 1301079354}
   availableBiomes:
   - {fileID: 11400000, guid: 4c77cd16ddcb74140b05ae5aef95262a, type: 2}
@@ -1082,7 +1083,6 @@ MonoBehaviour:
   goldClusterRadius: 2
   goldClusterDensity: 0.5
   grassDensity: 0.2
-  BtnSpawnUnit: {fileID: 0}
   villagerPrefab: {fileID: 3761211922497028422, guid: c60ef5a34ba3569418ebd1265192731a, type: 3}
 --- !u!4 &1923512569
 Transform:

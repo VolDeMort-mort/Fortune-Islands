@@ -16,6 +16,7 @@ public class BuildingManager : MonoBehaviour
     private GameObject _currentGhost;
     private GameObject _prefabToBuild;
     private bool _isBuilding = false;
+    private float _currentYRotation = 0f;
     private Renderer[] _ghostRenderers;
 
     public Button CreateBtn;
@@ -38,6 +39,7 @@ public class BuildingManager : MonoBehaviour
             CancelBuilding();
             return;
         }
+    
 
         // 2. Raycast to find mouse position on map
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -72,9 +74,9 @@ public class BuildingManager : MonoBehaviour
                 }
             }
 
-            if (Input.GetKey(KeyCode.R) && _isBuilding)
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                
+                RotateBuilding();
             }
         }
     }
@@ -117,7 +119,7 @@ public class BuildingManager : MonoBehaviour
     private void PlaceBuilding(int x, int z)
     {
         // 1. Instantiate Real Object
-        GameObject newBuilding = Instantiate(_prefabToBuild, new Vector3(x + 0.5f, 1f, z), Quaternion.identity, mapGenerator.worldContainer);
+        GameObject newBuilding = Instantiate(_prefabToBuild, new Vector3(x + 0.5f, 1f, z), Quaternion.Euler(0, _currentYRotation, 0), mapGenerator.worldContainer);
 
         // 2. Update Data Grid
         CellData cell = mapGenerator.map.GetCell(x, z);
@@ -129,5 +131,16 @@ public class BuildingManager : MonoBehaviour
 
         // 4. Cleanup
         CancelBuilding();
+    }
+
+    public void RotateBuilding()
+    {
+        if (!_isBuilding || _currentGhost == null) return;
+
+        _currentYRotation += 90f;
+        
+        if (_currentYRotation >= 360f) _currentYRotation = 0f;
+
+        _currentGhost.transform.rotation = Quaternion.Euler(0, _currentYRotation, 0);
     }
 }

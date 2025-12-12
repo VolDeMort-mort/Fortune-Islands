@@ -8,7 +8,6 @@ public class VillagerController : MonoBehaviour
     private MapGenerator mapRef;
     private Vector2Int currentGridPos;
     private bool isMoving = false;
-    
     public float moveSpeed = 1.5f;
 
     public void Initialize(MapGenerator map, Vector2Int startPos)
