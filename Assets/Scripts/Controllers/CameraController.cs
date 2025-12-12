@@ -23,16 +23,11 @@ public class CameraController : MonoBehaviour
         rotationY = rot.y;
         rotationX = rot.x;
 
-        // BUG FIX: Unity reads angles as 0-360. 
-        // If your camera starts looking slightly up (e.g., 350 degrees), 
-        // the Clamp will snap it to 90 immediately.
-        // This converts 350 -> -10 so the math works smoothly.
         if (rotationX > 180) rotationX -= 360;
     }
 
     void Update()
     {
-        // 1. Camera Rotation
         if (Input.GetMouseButton(1)) 
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -51,18 +46,14 @@ public class CameraController : MonoBehaviour
             Cursor.visible = true;
         }
 
-        // 2. Movement (Standard Transform, No Physics)
         float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : moveSpeed;
-        
         Vector3 moveDir = Vector3.zero;
 
-        // Note: I cleaned up the Arrow Key mapping (you had UpArrow for everything)
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) moveDir += transform.forward;
         if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) moveDir -= transform.forward;
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) moveDir -= transform.right;
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) moveDir += transform.right;
 
-        // 3. Up/Down Movement
         if (Input.GetKey(KeyCode.E)) moveDir += Vector3.up;
         if (Input.GetKey(KeyCode.Q)) moveDir -= Vector3.up;
 

@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IGenerationPattern
 {
-    void Generate(CellData[,] grid, List<Vector2Int> groundTiles, BiomeConfig biome);
+    void Generate(WorldMap map, List<Vector2Int> groundTiles, BiomeConfig biome);
 }

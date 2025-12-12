@@ -1,24 +1,13 @@
 using UnityEngine;
 
-public enum CellType { Water, Ground }
 
-public enum TileVariation 
-{ 
-    Center, 
-    InnerCorner, 
-    OuterCorner, 
-    Edge, 
-    Tip, 
-    Isolated 
-}
 [System.Serializable]
 public class CellData
 {
     public Vector2Int Coordinates;
-    public CellType Type;
+    public CellType Type { get; set; }
     public TileVariation Variation;
     
-    // Layer 1: What is on top of this block?
     public GameObject OccupyingObject; 
     public bool IsWalkable => Type == CellType.Ground && OccupyingObject == null;
 

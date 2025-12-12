@@ -13,11 +13,11 @@ public class RandomPattern : IGenerationPattern
         this.density = density;
     }
 
-    public void Generate(CellData[,] grid, List<Vector2Int> groundTiles, BiomeConfig biome)
+    public void Generate(WorldMap map, List<Vector2Int> groundTiles, BiomeConfig biome)
     {
         foreach (var pos in groundTiles)
         {
-            CellData cell = grid[pos.x, pos.y];
+            CellData cell = map.GetCell(pos.x, pos.y);
 
             if (Random.value < density)
             {

@@ -5,7 +5,7 @@ public class ResourceCluster
     public Vector2 center;
     public float radius;
     public float density;
-    public ResourceType resourceType; // 0 = Tree, 1 = Rock
+    public ResourceType resourceType;
 
     public ResourceCluster(Vector2 center, float radius, ResourceType type, float density)
     {

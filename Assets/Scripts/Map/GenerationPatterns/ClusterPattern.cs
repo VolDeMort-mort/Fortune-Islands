@@ -17,11 +17,10 @@ public class ClusterPattern : IGenerationPattern
         this.density = density;
     }
 
-    public void Generate(CellData[,] grid, List<Vector2Int> groundTiles, BiomeConfig biome)
+    public void Generate(WorldMap map, List<Vector2Int> groundTiles, BiomeConfig biome)
     {
         if (groundTiles.Count == 0) return;
 
-        // Створюємо центри кластерів
         List<ResourceCluster> clusters = new List<ResourceCluster>();
         for (int i = 0; i < clusterCount; i++)
         {
@@ -29,13 +28,12 @@ public class ClusterPattern : IGenerationPattern
             clusters.Add(new ResourceCluster(randomCenter, radius, type, density));
         }
 
-        // Проходимось по карті і застосовуємо вплив кластерів
         foreach (var pos in groundTiles)
         {
-            if (grid[pos.x, pos.y].Variation != TileVariation.Center) continue;
-            if (grid[pos.x, pos.y].OccupyingObject != null) continue;
+            if (map.GetCell(pos.x, pos.y).Variation != TileVariation.Center) continue;
+            if (map.GetCell(pos.x, pos.y).OccupyingObject != null) continue;
    
-            CellData cell = grid[pos.x, pos.y];
+            CellData cell = map.GetCell(pos.x, pos.y);
             
             float bestInfluence = 0f;
             foreach (var cluster in clusters)

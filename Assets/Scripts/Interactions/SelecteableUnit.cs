@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SelectableSurface : MonoBehaviour, ISelectable
+public class SelectableUnit : MonoBehaviour, ISelectable
 {
     [Header("Visuals")]
     public GameObject selectionRing;
