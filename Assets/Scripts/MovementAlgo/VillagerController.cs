@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class VillagerController : MonoBehaviour
 {
-    private MapGenerator mapRef;
+    private MapManager mapRef;
     private Vector2Int currentGridPos;
     private bool isMoving = false;
-    
     public float moveSpeed = 1.5f;
 
-    public void Initialize(MapGenerator map, Vector2Int startPos)
+    public void Initialize(MapManager map, Vector2Int startPos)
     {
-        this.mapRef = map;
-        this.currentGridPos = startPos;
+        mapRef = map;
+        currentGridPos = startPos;
         transform.position = new Vector3(startPos.x, 1f, startPos.y);
         
         // Occupy start pos
-        mapRef.Grid[startPos.x, startPos.y].OccupyingObject = this.gameObject;
+        mapRef.map.GetCell(startPos.x, startPos.y).OccupyingObject = gameObject.GetComponent<Unit>();
 
         StartCoroutine(LifeCycle());
     }
@@ -32,7 +32,7 @@ public class VillagerController : MonoBehaviour
             Vector2Int destination = GetRandomDestination();
 
             // 2. Calculate A* Path
-            List<Vector2Int> path = Pathfinding.FindPath(mapRef.Grid, currentGridPos, destination);
+            List<Vector2Int> path = Pathfinding.FindPath(mapRef.map.GetGrid(), currentGridPos, destination);
 
             // 3. If path is valid, follow it
             if (path != null && path.Count > 0)
@@ -55,11 +55,11 @@ public class VillagerController : MonoBehaviour
         // Try to find a walkable ground tile
         for(int i=0; i<50; i++)
         {
-            int x = Random.Range(0, mapRef.mapSize.x);
-            int y = Random.Range(0, mapRef.mapSize.y);
+            int x = Random.Range(0, mapRef.map.mapSize.x);
+            int y = Random.Range(0, mapRef.map.mapSize.y);
             
             // Only go there if it is Ground and Empty
-            if (mapRef.Grid[x,y].Type == CellType.Ground && mapRef.Grid[x,y].OccupyingObject == null)
+            if (mapRef.map.GetCell(x, y).Type == CellType.Ground && mapRef.map.GetCell(x, y).OccupyingObject == null)
             {
                 return new Vector2Int(x, y);
             }
@@ -74,15 +74,15 @@ public class VillagerController : MonoBehaviour
         foreach (Vector2Int step in path)
         {
             // Re-check: Is the next step STILL empty? (Maybe another villager walked there while we were moving)
-            if (mapRef.Grid[step.x, step.y].OccupyingObject != null)
+            if (mapRef.map.GetCell(step.x, step.y).OccupyingObject != null)
             {
                 // Path blocked! Stop here and recalculate later
                 break; 
             }
 
             // LOGIC: Swap Grid Data
-            mapRef.Grid[currentGridPos.x, currentGridPos.y].OccupyingObject = null;
-            mapRef.Grid[step.x, step.y].OccupyingObject = this.gameObject;
+            mapRef.map.GetCell(currentGridPos.x, currentGridPos.y).OccupyingObject = null;
+            mapRef.map.GetCell(step.x, step.y).OccupyingObject = this.gameObject.GetComponent<Unit>();
             currentGridPos = step;
 
             // VISUAL: Smooth movement

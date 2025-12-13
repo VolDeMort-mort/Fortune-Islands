@@ -1,0 +1,259 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2143868553450783311
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 411332145298113898}
+  - component: {fileID: 4359516250199778251}
+  m_Layer: 0
+  m_Name: MapManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &411332145298113898
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143868553450783311}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -30.725872, y: -1.7748299, z: -25.430288}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3999984847416806662}
+  m_Father: {fileID: 2857892175899579540}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4359516250199778251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143868553450783311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d665ee14825d43b4cb0d401cb60fbc30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
+  BtnGenerate: {fileID: 0}
+  BtnSpawnUnit: {fileID: 0}
+  mapSize: {x: 100, y: 100}
+  worldContainer: {fileID: 3999984847416806662}
+  availableBiomes:
+  - {fileID: 11400000, guid: 4c77cd16ddcb74140b05ae5aef95262a, type: 2}
+  - {fileID: 11400000, guid: 1b2379aa813bc8b4898e29cc2450313c, type: 2}
+  - {fileID: 11400000, guid: be7c3f86ff1504240a49431616041355, type: 2}
+  noiseScale: 25
+  noiseOctaves: 4
+  noiseThreshold: 0.4
+  falloffStrength: 3
+  islandSizeMultiplier: 1
+  treeClusterCount: 10
+  treeClusterRadius: 15
+  treeClusterDensity: 0.5
+  rockClusterCount: 10
+  rockClusterRadius: 5
+  rockClusterDensity: 0.5
+  goldClusterCount: 1
+  goldClusterRadius: 2
+  goldClusterDensity: 0.5
+  grassDensity: 0.2
+  villagerPrefab: {fileID: 3761211922497028422, guid: c60ef5a34ba3569418ebd1265192731a, type: 3}
+--- !u!1 &2479825389327341567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3999984847416806662}
+  m_Layer: 0
+  m_Name: WorldContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3999984847416806662
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2479825389327341567}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 411332145298113898}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4055483164614088023
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2857892175899579540}
+  - component: {fileID: 5286989964551786957}
+  m_Layer: 0
+  m_Name: IslandTemplate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2857892175899579540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4055483164614088023}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 411332145298113898}
+  - {fileID: 4011002850423593817}
+  - {fileID: 668640324390497158}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5286989964551786957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4055483164614088023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a1edf79493a60f47985be4e882ce164, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IslandController
+  PlayerID: 0
+  isLocalPlayer: 1
+  mapManager: {fileID: 4359516250199778251}
+  buildManager: {fileID: 195428244750757158}
+  resourceManager: {fileID: 787189691311335136}
+--- !u!1 &6035288974583592176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4011002850423593817}
+  - component: {fileID: 195428244750757158}
+  m_Layer: 0
+  m_Name: BuildingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4011002850423593817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6035288974583592176}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -39.251072, y: -22.78925, z: -48.232788}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2857892175899579540}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &195428244750757158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6035288974583592176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725717c2ece992a438d8c1cf3e502ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingManager
+  mapManager: {fileID: 4359516250199778251}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  validMaterial: {fileID: 2100000, guid: e80f1ec0763608a419964a655c842b10, type: 2}
+  invalidMaterial: {fileID: 2100000, guid: f59ad206de42c6c43adf9ca6c7edbdd1, type: 2}
+  CreateBtn: {fileID: 0}
+  buildingPrefab: {fileID: 4206524632197453703, guid: 2a881836b9739a640adc506feb21726b, type: 3}
+--- !u!1 &8875754661389686521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 668640324390497158}
+  - component: {fileID: 787189691311335136}
+  m_Layer: 0
+  m_Name: ResourcesManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &668640324390497158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875754661389686521}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -49.21609, y: -4.90684, z: -48.88355}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2857892175899579540}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &787189691311335136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8875754661389686521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 972c2eb949760af498ea153cf301de1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceManager
+  allResources:
+  - {fileID: 11400000, guid: 9d98cba2cb12ec843be70bf9d7ea9778, type: 2}
+  - {fileID: 11400000, guid: 4e6e612886c422443bd2b52afab8190e, type: 2}
+  - {fileID: 11400000, guid: ca5b7f36776487c499dc364c570f1604, type: 2}
+  - {fileID: 11400000, guid: b2598aa4fa3e4bb4da5a7d9c3ca85c7e, type: 2}
+  - {fileID: 11400000, guid: 89fb9ec210d213a47a56af2a4d317e7f, type: 2}
+  - {fileID: 11400000, guid: 210d75e37e4a3884395e8568c632d712, type: 2}
+  - {fileID: 11400000, guid: 0155fb7824022b34eb1b0f267097a7fa, type: 2}
+  - {fileID: 11400000, guid: b5f7907b51462834599363372937d7a5, type: 2}

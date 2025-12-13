@@ -1,0 +1,29 @@
+using UnityEngine;
+
+public class ResourceCluster
+{
+    public Vector2 center;
+    public float radius;
+    public float density;
+    public MapResourceType MapResourceType;
+
+    public ResourceCluster(Vector2 center, float radius, MapResourceType type, float density)
+    {
+        this.center = center;
+        this.radius = radius;
+        this.MapResourceType = type;
+        this.density = density;
+    }
+
+    public float GetInfluence(int x, int z)
+    {
+        float dx = x - center.x;
+        float dz = z - center.y;
+        float dist = Mathf.Sqrt(dx * dx + dz * dz);
+
+        if (dist > radius) return 0f;
+
+        float normalizedDist = dist / radius;
+        return (1f - normalizedDist) * density;
+    }
+}
