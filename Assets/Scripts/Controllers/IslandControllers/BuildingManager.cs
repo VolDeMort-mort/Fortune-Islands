@@ -3,17 +3,23 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using TMPro.EditorUtilities;
 
-public class BuildingManager : MonoBehaviour
+public class BuildingManager : IManager
 {
     [Header("References")]
     public MapManager mapManager;
-    public Camera mainCamera;
+    private Camera _cam;
     public LayerMask groundLayer; // Layer for the mouse raycast (Terrain/Ground)
 
-    [Header("Settings")]
+    [Header("Build settings")]
     public Material validMaterial;   // Transparent Green
     public Material invalidMaterial; // Transparent Red
+
+    [Header("Placing settings")]
+    public Button CreateBtn;
+    public GameObject buildingPrefab;
+
 
     private GameObject _currentGhost;
     private GameObject _prefabToBuild;
@@ -21,9 +27,12 @@ public class BuildingManager : MonoBehaviour
     private float _currentYRotation = 0f;
     private Renderer[] _ghostRenderers;
 
-    public Button CreateBtn;
-
-    public GameObject buildingPrefab;
+    public override void Initialize(IslandController controller)
+    {
+        base.Initialize(controller);
+        _cam = Camera.main;
+        
+    }
 
     void Start()
     {
@@ -44,7 +53,7 @@ public class BuildingManager : MonoBehaviour
     
 
         // 2. Raycast to find mouse position on map
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, 1000f, groundLayer))

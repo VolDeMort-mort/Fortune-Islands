@@ -3,7 +3,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MapManager : MonoBehaviour
+public class MapManager : IManager
 {
     [Header("UI")]
     public Button BtnGenerate;
@@ -42,13 +42,15 @@ public class MapManager : MonoBehaviour
     private TileService tileService;
     private BiomeConfig currentBiome;
 
-    void Initialize()
+
+
+    public void Initialize()
     {
         map = new WorldMap(mapSize);
         tileService = new TileService(map);
     }
 
-    void Start()
+    public void Start()
     {
         GenerateWorld();
         SpawnVillager();

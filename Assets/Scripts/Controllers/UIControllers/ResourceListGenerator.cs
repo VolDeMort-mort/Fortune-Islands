@@ -1,24 +1,25 @@
+using TMPro;
 using UnityEngine;
 
 public class ResourceListGenerator : MonoBehaviour
 {
     [Header("Dependencies")]
-    public ResourceManager resourceManager; // Drag GameManager here
+    private ResourceManager _resourceManager;
 
     [Header("Settings")]
-    public GameObject resourceItemPrefab;   // Drag the Prefab here
-    public Transform container;             // Drag the Panel here
-
-    // Change this in the Inspector for each panel!
+    public GameObject resourceItemPrefab;   
+    public Transform container;             
     public ResourceDisplayStyle listStyle; 
 
-    void Start()
+    public void Initialize(ResourceManager manager)
     {
+        _resourceManager = manager;
         GenerateList();
     }
 
     void GenerateList()
     {
+        Debug.Log($"Generating resource panel");
         // 1. Clear old placeholders
         foreach (Transform child in container)
         {
@@ -26,7 +27,7 @@ public class ResourceListGenerator : MonoBehaviour
         }
 
         // 2. Loop through all 8 resources
-        foreach (var def in resourceManager.allResources)
+        foreach (var def in _resourceManager.allResources)
         {
             Debug.Log($"Currently watching {def.type} {def.style}");
             if (def.style == listStyle){
@@ -37,7 +38,7 @@ public class ResourceListGenerator : MonoBehaviour
                 if (script != null)
                 {
                     // Pass the style specific to THIS generator
-                    script.Setup(resourceManager, def, listStyle);
+                    script.Setup(_resourceManager, def, listStyle);
                 }
             }
         }

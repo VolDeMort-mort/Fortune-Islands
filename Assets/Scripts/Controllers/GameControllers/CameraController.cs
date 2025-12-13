@@ -59,4 +59,15 @@ public class CameraController : MonoBehaviour
 
         transform.position += moveDir * currentSpeed * Time.deltaTime;
     }
+
+    public void FocusOnTarget(Vector3 targetPosition)
+    {
+        // Keep current height (Y) and offset (Z), but move X to the island
+        transform.position = new Vector3(targetPosition.x, transform.position.y, targetPosition.z - 10f);
+        
+        // Optional: Reset rotation
+        rotationY = 0;
+        rotationX = 45; // Look down slightly
+        transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
+    }
 }

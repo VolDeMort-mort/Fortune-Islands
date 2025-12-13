@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class ResourceManager : MonoBehaviour
+public class ResourceManager : IManager
 {
     // --- The Event ---
     // We send the Type so the UI knows WHICH resource changed
@@ -15,6 +15,7 @@ public class ResourceManager : MonoBehaviour
     // The Dynamic Data
     private Dictionary<ResourceType, int> _inventory = new Dictionary<ResourceType, int>();
     private Dictionary<ResourceType, ResourceDefinition> _definitions = new Dictionary<ResourceType, ResourceDefinition>();
+
 
     private void Awake()
     {
