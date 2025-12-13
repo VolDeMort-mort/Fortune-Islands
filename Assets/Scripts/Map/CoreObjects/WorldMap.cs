@@ -1,6 +1,8 @@
 using Unity.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
+
 
 public class WorldMap
 {
@@ -12,6 +14,7 @@ public class WorldMap
     public WorldMap(Vector2Int size)
     {
         mapSize = size;
+        
         InitializeGrid();
     }
     public void InitializeGrid()
@@ -40,9 +43,6 @@ public class WorldMap
     {
         return Grid;
     }
-
-
-
 
     public bool IsGround(int nx, int ny) 
     {
@@ -75,4 +75,18 @@ public class WorldMap
         return list;
     }
 
+    public void debugGrid()
+    {
+        string str = "";
+        for (int x = 0; x < mapSize.x; x++)
+        {
+            for (int y = 0; y < mapSize.y; y++)
+            {
+                if (GetCell(x, y).OccupyingObject != null)
+                    str += $"{x} {y} {GetCell(x, y).OccupyingObject.GetType()}\n";
+            }
+        }
+
+        Debug.Log($"Curr placed obj: {str}");
+    }
 }

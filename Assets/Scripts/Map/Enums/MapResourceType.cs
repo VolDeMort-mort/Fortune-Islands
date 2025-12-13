@@ -1,4 +1,4 @@
-    public enum ResourceType
+    public enum MapResourceType
     {
         Tree = 0,
         Rock,

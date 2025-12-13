@@ -3,7 +3,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MapGenerator : MonoBehaviour
+public class MapManager : MonoBehaviour
 {
     [Header("UI")]
     public Button BtnGenerate;
@@ -50,7 +50,6 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
-        Initialize();
         GenerateWorld();
         SpawnVillager();
         if (BtnSpawnUnit != null) 
@@ -62,6 +61,8 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateWorld()
     {
+        Initialize();
+
         if (availableBiomes.Length > 0)
         {
             currentBiome = availableBiomes[UnityEngine.Random.Range(0, availableBiomes.Length)];
@@ -129,13 +130,13 @@ public class MapGenerator : MonoBehaviour
 
         List<IGenerationPattern> generationSteps = new List<IGenerationPattern>();
 
-        generationSteps.Add(new ClusterPattern(ResourceType.Tree,treeClusterCount, treeClusterRadius, treeClusterDensity));
+        generationSteps.Add(new ClusterPattern(MapResourceType.Tree,treeClusterCount, treeClusterRadius, treeClusterDensity));
         
-        generationSteps.Add(new ClusterPattern(ResourceType.Rock, rockClusterCount, rockClusterRadius, rockClusterDensity));
+        generationSteps.Add(new ClusterPattern(MapResourceType.Rock, rockClusterCount, rockClusterRadius, rockClusterDensity));
         
-        generationSteps.Add(new ClusterPattern(ResourceType.Gold, goldClusterCount, goldClusterRadius, goldClusterDensity));
+        generationSteps.Add(new ClusterPattern(MapResourceType.Gold, goldClusterCount, goldClusterRadius, goldClusterDensity));
 
-        generationSteps.Add(new RandomPattern(ResourceType.Grass, grassDensity, true));
+        generationSteps.Add(new RandomPattern(MapResourceType.Grass, grassDensity, true));
 
 
         foreach (var pattern in generationSteps)

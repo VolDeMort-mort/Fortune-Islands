@@ -5,19 +5,19 @@ using UnityEngine;
 
 public class VillagerController : MonoBehaviour
 {
-    private MapGenerator mapRef;
+    private MapManager mapRef;
     private Vector2Int currentGridPos;
     private bool isMoving = false;
     public float moveSpeed = 1.5f;
 
-    public void Initialize(MapGenerator map, Vector2Int startPos)
+    public void Initialize(MapManager map, Vector2Int startPos)
     {
-        this.mapRef = map;
-        this.currentGridPos = startPos;
+        mapRef = map;
+        currentGridPos = startPos;
         transform.position = new Vector3(startPos.x, 1f, startPos.y);
         
         // Occupy start pos
-        mapRef.map.GetCell(startPos.x, startPos.y).OccupyingObject = this.gameObject;
+        mapRef.map.GetCell(startPos.x, startPos.y).OccupyingObject = gameObject.GetComponent<Unit>();
 
         StartCoroutine(LifeCycle());
     }
@@ -82,7 +82,7 @@ public class VillagerController : MonoBehaviour
 
             // LOGIC: Swap Grid Data
             mapRef.map.GetCell(currentGridPos.x, currentGridPos.y).OccupyingObject = null;
-            mapRef.map.GetCell(step.x, step.y).OccupyingObject = this.gameObject;
+            mapRef.map.GetCell(step.x, step.y).OccupyingObject = this.gameObject.GetComponent<Unit>();
             currentGridPos = step;
 
             // VISUAL: Smooth movement

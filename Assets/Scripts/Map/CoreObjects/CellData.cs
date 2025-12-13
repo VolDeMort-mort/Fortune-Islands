@@ -8,7 +8,7 @@ public class CellData
     public CellType Type { get; set; }
     public TileVariation Variation;
     
-    public GameObject OccupyingObject; 
+    public WorldEntity OccupyingObject; 
     public bool IsWalkable => Type == CellType.Ground && OccupyingObject == null;
 
     // Bitmask value (0-15) to determine specific mesh rotation/type

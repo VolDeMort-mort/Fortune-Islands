@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ClusterPattern : IGenerationPattern
 {
-    private ResourceType type;
+    private MapResourceType type;
     private int clusterCount;
     private float radius;
     private float density;
 
-    public ClusterPattern(ResourceType type, int count, float radius, float density)
+    public ClusterPattern(MapResourceType type, int count, float radius, float density)
     {
         this.type = type;
         this.clusterCount = count;
@@ -48,7 +48,7 @@ public class ClusterPattern : IGenerationPattern
                 GameObject prefab = biome.GetRandomPrefab(type);
                 if (prefab != null)
                 {
-                    cell.OccupyingObject = prefab;
+                    cell.OccupyingObject = prefab.GetComponent<WorldEntity>();
                 }
             }
         }

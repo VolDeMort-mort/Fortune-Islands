@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3976789475231895514}
   - component: {fileID: 1636871983763094028}
   - component: {fileID: 4206134361370239780}
+  - component: {fileID: -7471150941241835033}
   m_Layer: 0
   m_Name: Villager
   m_TagString: Untagged
@@ -127,3 +128,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VillagerController
   moveSpeed: 3
+--- !u!114 &-7471150941241835033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3761211922497028422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4ab79477544a04bae266c69671c499, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit
+  selectionRing: {fileID: 316456563694519857, guid: ea4eb23e0ca690048a3226f2ae66b9a7, type: 3}

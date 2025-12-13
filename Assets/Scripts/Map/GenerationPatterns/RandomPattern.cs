@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class RandomPattern : IGenerationPattern
 {
-    private ResourceType type;
+    private MapResourceType type;
     private float density; 
 
-    public RandomPattern(ResourceType type, float density, bool requiresEmptySpace = true)
+    public RandomPattern(MapResourceType type, float density, bool requiresEmptySpace = true)
     {
         this.type = type;
         this.density = density;
@@ -25,7 +25,7 @@ public class RandomPattern : IGenerationPattern
                 
                 if (prefab != null)
                 {
-                    cell.OccupyingObject = prefab; 
+                    cell.OccupyingObject = prefab.GetComponent<WorldEntity>(); 
                 }
             }
         }

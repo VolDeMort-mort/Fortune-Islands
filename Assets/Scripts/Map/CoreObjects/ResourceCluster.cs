@@ -5,13 +5,13 @@ public class ResourceCluster
     public Vector2 center;
     public float radius;
     public float density;
-    public ResourceType resourceType;
+    public MapResourceType MapResourceType;
 
-    public ResourceCluster(Vector2 center, float radius, ResourceType type, float density)
+    public ResourceCluster(Vector2 center, float radius, MapResourceType type, float density)
     {
         this.center = center;
         this.radius = radius;
-        this.resourceType = type;
+        this.MapResourceType = type;
         this.density = density;
     }
 

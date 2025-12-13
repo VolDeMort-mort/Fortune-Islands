@@ -22,22 +22,22 @@ public class BiomeConfig : ScriptableObject
     public GameObject[] goldsPrefab;
     public GameObject[] grassPrefabs;
 
-    public GameObject GetRandomPrefab(ResourceType type)
+    public GameObject GetRandomPrefab(MapResourceType type)
     {
         switch (type)
         {
-            case ResourceType.Tree:
+            case MapResourceType.Tree:
                 if (treesPrefabs.Length == 0) return null;
                 return treesPrefabs[Random.Range(0, treesPrefabs.Length)];
             
-            case ResourceType.Rock:
+            case MapResourceType.Rock:
                 if (rocksPrefab.Length == 0) return null;
                 return rocksPrefab[Random.Range(0, rocksPrefab.Length)];
 
-            case ResourceType.Gold:
+            case MapResourceType.Gold:
                 if (goldsPrefab.Length == 0) return null;
                 return goldsPrefab[Random.Range(0, goldsPrefab.Length)];
-            case ResourceType.Grass:
+            case MapResourceType.Grass:
                 if (grassPrefabs.Length == 0) return null;
                 return grassPrefabs[Random.Range(0, grassPrefabs.Length)];
 

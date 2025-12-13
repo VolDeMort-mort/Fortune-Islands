@@ -4,7 +4,6 @@ public class SelectionManager : MonoBehaviour
 {
     [Header("Settings")]
     public LayerMask selectableLayer;
-
     private ISelectable _currentSelection;
     bool isSelected = false;
 

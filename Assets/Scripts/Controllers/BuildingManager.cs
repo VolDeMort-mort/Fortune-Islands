@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System;
 
 public class BuildingManager : MonoBehaviour
 {
     [Header("References")]
-    public MapGenerator mapGenerator;
+    public MapManager mapManager;
     public Camera mainCamera;
     public LayerMask groundLayer; // Layer for the mouse raycast (Terrain/Ground)
 
@@ -52,11 +54,16 @@ public class BuildingManager : MonoBehaviour
             int z = Mathf.RoundToInt(hit.point.z);
 
             // Update Ghost Position (Height 1f to match your resources)
-            _currentGhost.transform.position = new Vector3(x + 0.5f, 1f, z);
-
-            // 4. Validate and Color
-            bool isValid = mapGenerator.map.isPlacable(x, z);
+            Vector3 targetPosition = (_currentYRotation == 0 || _currentYRotation == 180) ? new Vector3(x + 0.5f, 1f, z) : new Vector3(x, 1f, z + 0.5f);
+            _currentGhost.transform.position = targetPosition;
+            _currentGhost.transform.rotation = Quaternion.Euler(0, _currentYRotation, 0);
+            
+            Structure ghostScript = _currentGhost.GetComponent<Structure>();            
+            bool isValid = IsAreaValid(x, z, ghostScript);
             UpdateGhostColor(isValid);
+
+            // 4. Debugging: Draw the footprint in Scene View
+            DrawDebugFootprint(x, z, ghostScript);
 
             // 5. Build on Left Click
             if (Input.GetMouseButtonDown(0))
@@ -118,19 +125,27 @@ public class BuildingManager : MonoBehaviour
 
     private void PlaceBuilding(int x, int z)
     {
-        // 1. Instantiate Real Object
-        GameObject newBuilding = Instantiate(_prefabToBuild, new Vector3(x + 0.5f, 1f, z), Quaternion.Euler(0, _currentYRotation, 0), mapGenerator.worldContainer);
 
-        // 2. Update Data Grid
-        CellData cell = mapGenerator.map.GetCell(x, z);
-        cell.OccupyingObject = newBuilding;
-        
-        // newBuilding.AddComponent<SelectableSurface>(); 
+        GameObject newBuildingObj = Instantiate(_prefabToBuild, 
+            (_currentYRotation == 0 || _currentYRotation == 180) ? new Vector3(x + 0.5f, 1f, z) : new Vector3(x, 1f, z + 0.5f),
+            Quaternion.Euler(0, _currentYRotation, 0), 
+            mapManager.worldContainer
+        );
 
-        Debug.Log($"Building placed at {x}, {z}");
+        Structure structureScript = newBuildingObj.GetComponent<Structure>();
+        List<Vector2Int> shape = structureScript.GetRotatedFootprint(_currentYRotation);
 
-        // 4. Cleanup
+        foreach (Vector2Int offset in shape)
+        {
+            int targetX = x + offset.x;
+            int targetZ = z + offset.y;
+            if (mapManager.map.isPlacable(targetX, targetZ)) {
+                Debug.Log($"Occupying Cell: {targetX}, {targetZ}");
+                mapManager.map.GetCell(targetX, targetZ).OccupyingObject = structureScript;
+            }        }
+
         CancelBuilding();
+        mapManager.map.debugGrid();
     }
 
     public void RotateBuilding()
@@ -142,5 +157,41 @@ public class BuildingManager : MonoBehaviour
         if (_currentYRotation >= 360f) _currentYRotation = 0f;
 
         _currentGhost.transform.rotation = Quaternion.Euler(0, _currentYRotation, 0);
+    }
+
+    private bool IsAreaValid(int pivotX, int pivotZ, Structure buildingScript)
+    {
+        // Get the specific shape based on current rotation
+        List<Vector2Int> shape = buildingScript.GetRotatedFootprint(_currentYRotation);
+
+        foreach (Vector2Int offset in shape)
+        {
+            int targetX = pivotX + offset.x;
+            int targetZ = pivotZ + offset.y;
+
+            // A. Check Bounds
+            if (targetX < 0 || targetX >= mapManager.mapSize.x || 
+                targetZ < 0 || targetZ >= mapManager.mapSize.y) 
+                return false;
+
+            // B. Check Cell Availability
+            CellData cell = mapManager.map.GetCell(targetX, targetZ);
+
+            if (cell.Type != CellType.Ground) return false;
+            if (cell.OccupyingObject != null) return false;
+        }
+        return true;
+    }
+
+    void DrawDebugFootprint(int x, int z, Structure script)
+    {
+        List<Vector2Int> shape = script.GetRotatedFootprint(_currentYRotation);
+        foreach (Vector2Int offset in shape)
+        {
+            // Draw a Red Box at every tile the logic THINKS is occupied
+            Vector3 center = new Vector3(x + offset.x, 1.5f, z + offset.y);
+            Debug.DrawRay(center, Vector3.up * 2, Color.red);
+            Debug.DrawLine(center + Vector3.left*0.4f, center + Vector3.right*0.4f, Color.red);
+        }
     }
 }
