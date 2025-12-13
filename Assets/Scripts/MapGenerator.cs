@@ -241,7 +241,7 @@ public class MapGenerator : MonoBehaviour
 
                 if (cell.Type == CellType.Ground)
                 {
-                    pos = new Vector3(x, 0.15f, y);
+                    pos = new Vector3(x, 0.2f, y);
                     rotation = GetRotationForCell(x, y, cell.Bitmask, cell.Variation);
                     switch (cell.Variation)
                     {
@@ -257,7 +257,7 @@ public class MapGenerator : MonoBehaviour
                     // --- Layer 1: Resources ---
                     if (cell.OccupyingObject != null)
                     {
-                        Instantiate(cell.OccupyingObject, new Vector3(x, 1, y), Quaternion.identity, worldContainer);
+                        Instantiate(cell.OccupyingObject, new Vector3(x, 1f, y), Quaternion.identity, worldContainer);
                         // cell.OccupyingObject = resourceObj; 
                     }
                 }
