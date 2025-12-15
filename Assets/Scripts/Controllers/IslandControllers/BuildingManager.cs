@@ -7,6 +7,13 @@ using TMPro.EditorUtilities;
 
 public class BuildingManager : IManager
 {
+    [System.Serializable]
+    public struct BuildingTypeObj
+    {
+        public BuildingTypes buildingType;
+        public GameObject gameObj;
+    }
+
     [Header("References")]
     public MapManager mapManager;
     private Camera _cam;
@@ -17,10 +24,8 @@ public class BuildingManager : IManager
     public Material invalidMaterial; // Transparent Red
 
     [Header("Placing settings")]
-    public Button CreateBtn;
-    public GameObject buildingPrefab;
-
-
+    public List<BuildingTypeObj> allBuildings;
+    // public Dictionary<BuildingTypes, GameObject> allBuildings;
     private GameObject _currentGhost;
     private GameObject _prefabToBuild;
     private bool _isBuilding = false;
@@ -34,12 +39,12 @@ public class BuildingManager : IManager
         
     }
 
-    void Start()
-    {
-        if (CreateBtn != null)
-            CreateBtn.onClick.AddListener(StartPlacingBuilding);
+    // void Start()
+    // {
+    //     if (CreateBtn != null)
+    //         CreateBtn.onClick.AddListener(StartPlacingBuilding);
 
-    }
+    // }
     void Update()
     {
         if (!_isBuilding || _currentGhost == null) return;
@@ -73,7 +78,8 @@ public class BuildingManager : IManager
 
             // 4. Debugging: Draw the footprint in Scene View
             DrawDebugFootprint(x, z, ghostScript);
-
+            Debug.Log($"Building");
+            
             // 5. Build on Left Click
             if (Input.GetMouseButtonDown(0))
             {
@@ -97,15 +103,27 @@ public class BuildingManager : IManager
         }
     }
 
-    public void StartPlacingBuilding()
+    public void StartPlacingBuilding(BuildingTypes requestedType)
     {
         if (_isBuilding) CancelBuilding();
 
-        _prefabToBuild = buildingPrefab;
+        foreach(var pair in allBuildings)
+        {
+            if (pair.buildingType == requestedType)
+            {
+                _prefabToBuild = pair.gameObj;
+                break;
+            }
+        }
+        if (_prefabToBuild == null)
+        {
+            Debug.Log($"Building {requestedType} was not found in the list");
+        }
+
         _isBuilding = true;
 
         // Create the ghost visual
-        _currentGhost = Instantiate(buildingPrefab);
+        _currentGhost = Instantiate(_prefabToBuild);
         
         // Disable collider so the raycast doesn't hit the ghost itself
         Collider[] colliders = _currentGhost.GetComponentsInChildren<Collider>();

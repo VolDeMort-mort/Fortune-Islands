@@ -12,7 +12,7 @@ public class GameStarter: MonoBehaviour
     {
         // Spawn Player 1 Island
         SpawnIsland(0, new Vector3(0, 0, 0));
-        SpawnIsland(1, new Vector3(200, 0, 0));
+        // SpawnIsland(1, new Vector3(200, 0, 0));
 
         // Spawn Player 2 Island (Far away)
         // SpawnIsland(1, new Vector3(200, 0, 0));

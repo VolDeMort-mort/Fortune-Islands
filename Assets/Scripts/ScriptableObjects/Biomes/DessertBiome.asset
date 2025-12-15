@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d93a3bb501d4d6a449cc10eeabfb4d6d, type: 3}
+  m_Name: DessertBiome
+  m_EditorClassIdentifier: Assembly-CSharp::BiomeConfig
+  biomeName: DessertBiome
+  deepWater: {fileID: 2290437110376421325, guid: 3216ef4c59fa3e64985d839d56c803d4, type: 3}
+  groundCenter: {fileID: 8664572432368330017, guid: c4a6558eafa348f4ea464fd8e05e0d28, type: 3}
+  groundInnerCorner: {fileID: 8664572432368330017, guid: c4a6558eafa348f4ea464fd8e05e0d28, type: 3}
+  groundOuterCorner: {fileID: 5363597351225739436, guid: 97fe8c2e74fe3af4796cbfcdfc651698, type: 3}
+  groundEdge: {fileID: 1832265454675915434, guid: 323622f23d91d524c8dea38e76b24453, type: 3}
+  groundTip: {fileID: 2548597025722327567, guid: 87505bd6a40acb64195382128fd48467, type: 3}
+  groundIsolated: {fileID: 1742832628098848333, guid: fd18bfe6a18af8845a0f404f478850e5, type: 3}
+  treesPrefabs:
+  - {fileID: 5435387791898406621, guid: 15fce40177145c447a16c0ca712299e0, type: 3}
+  - {fileID: 8054777101209723959, guid: 5f9d10e346226984c89e719b055c1630, type: 3}
+  rocksPrefab:
+  - {fileID: 7629694164645689468, guid: fb985b9cde3cb244db89de7d5767c1ec, type: 3}
+  - {fileID: 195867644159637843, guid: 3cf368127daefce48b44dbcfc51939b6, type: 3}
+  goldsPrefab:
+  - {fileID: 2641237120597659903, guid: 966934a08f9015546a3ca6c9fcb5200c, type: 3}
+  - {fileID: 1517371974267914441, guid: b7b6a757094cd2a4392b8f7c145bd4c3, type: 3}
+  grassPrefabs:
+  - {fileID: 3170998559336211166, guid: e462b05d3759e0e41866c6dae67697e3, type: 3}
+  - {fileID: 1519306223569820321, guid: 3819ff1884089bc4389c6d201059a2c9, type: 3}

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d93a3bb501d4d6a449cc10eeabfb4d6d, type: 3}
+  m_Name: SummerBiome
+  m_EditorClassIdentifier: Assembly-CSharp::BiomeConfig
+  biomeName: SummerBiome
+  deepWater: {fileID: 2290437110376421325, guid: 3216ef4c59fa3e64985d839d56c803d4, type: 3}
+  groundCenter: {fileID: 3818619300262691167, guid: d98786558f0dee2499c3c39891c46204, type: 3}
+  groundInnerCorner: {fileID: 3818619300262691167, guid: d98786558f0dee2499c3c39891c46204, type: 3}
+  groundOuterCorner: {fileID: 3248363504577772159, guid: a74f9809c9c25c548add5b29e7077d9b, type: 3}
+  groundEdge: {fileID: 941671532244307846, guid: 166cef3783249ca41bc049dde0f70974, type: 3}
+  groundTip: {fileID: 4768974121827368565, guid: 6fd3907145ebf8143be2d74790ffdaea, type: 3}
+  groundIsolated: {fileID: 1717535258002060624, guid: 541de8163a37d8842a13da3d49c4061a, type: 3}
+  treesPrefabs:
+  - {fileID: 6662083755536885731, guid: 4a51d9d9d6bfa344ba790a0a76240e29, type: 3}
+  - {fileID: 64064661009598394, guid: 69a2a7576d58fc943a2b389812469260, type: 3}
+  rocksPrefab:
+  - {fileID: 3984748198125845098, guid: 427cbc8c82ce3954cbec36bbf960ea44, type: 3}
+  - {fileID: 4400559019559154970, guid: 28353d9a9c7fef64ca93f399bc235b98, type: 3}
+  goldsPrefab:
+  - {fileID: 7764611491700734851, guid: bb2b0b62793e2da46b66cf75bcb5ad6d, type: 3}
+  - {fileID: 2250912885172380122, guid: 695cc400d8a29224bba467b76611c17c, type: 3}
+  grassPrefabs:
+  - {fileID: 2151352533798696976, guid: d6ec6f1e872d5d749b757c64825bfecc, type: 3}
