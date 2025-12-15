@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 411332145298113898}
-  - component: {fileID: 4359516250199778251}
+  - component: {fileID: 5183319578038913273}
   m_Layer: 0
   m_Name: MapManager
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 3999984847416806662}
   m_Father: {fileID: 2857892175899579540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4359516250199778251
+--- !u!114 &5183319578038913273
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,33 +42,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 2143868553450783311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d665ee14825d43b4cb0d401cb60fbc30, type: 3}
+  m_Script: {fileID: 11500000, guid: 0017df5ba94765d48bc2092106ae1d4a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
+  m_EditorClassIdentifier: Assembly-CSharp::MapManager
   BtnGenerate: {fileID: 0}
   BtnSpawnUnit: {fileID: 0}
-  mapSize: {x: 100, y: 100}
+  mapSize: {x: 50, y: 50}
   worldContainer: {fileID: 3999984847416806662}
   availableBiomes:
-  - {fileID: 11400000, guid: 4c77cd16ddcb74140b05ae5aef95262a, type: 2}
-  - {fileID: 11400000, guid: 1b2379aa813bc8b4898e29cc2450313c, type: 2}
-  - {fileID: 11400000, guid: be7c3f86ff1504240a49431616041355, type: 2}
+  - {fileID: 11400000, guid: 448ed2310a0be8649b9c0375abd0bff4, type: 2}
+  - {fileID: 11400000, guid: 2991b57f348a0304d8ace7baa1ee3318, type: 2}
+  - {fileID: 11400000, guid: 85713fbf0465a1e408d978e81f922ac8, type: 2}
   noiseScale: 25
   noiseOctaves: 4
   noiseThreshold: 0.4
   falloffStrength: 3
   islandSizeMultiplier: 1
-  treeClusterCount: 10
-  treeClusterRadius: 15
+  treeClusterCount: 5
+  treeClusterRadius: 5
   treeClusterDensity: 0.5
-  rockClusterCount: 10
+  rockClusterCount: 3
   rockClusterRadius: 5
   rockClusterDensity: 0.5
   goldClusterCount: 1
   goldClusterRadius: 2
   goldClusterDensity: 0.5
   grassDensity: 0.2
-  villagerPrefab: {fileID: 3761211922497028422, guid: c60ef5a34ba3569418ebd1265192731a, type: 3}
+  villagerPrefab: {fileID: 919132149155446097, guid: bdbee863c90191f48b0812a278bce077, type: 3}
 --- !u!1 &2479825389327341567
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::IslandController
   PlayerID: 0
   isLocalPlayer: 1
-  mapManager: {fileID: 4359516250199778251}
+  mapManager: {fileID: 5183319578038913273}
   buildManager: {fileID: 195428244750757158}
   resourceManager: {fileID: 787189691311335136}
 --- !u!1 &6035288974583592176
@@ -196,14 +196,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 725717c2ece992a438d8c1cf3e502ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingManager
-  mapManager: {fileID: 4359516250199778251}
+  mapManager: {fileID: 5183319578038913273}
   groundLayer:
     serializedVersion: 2
     m_Bits: 4294967295
   validMaterial: {fileID: 2100000, guid: e80f1ec0763608a419964a655c842b10, type: 2}
   invalidMaterial: {fileID: 2100000, guid: f59ad206de42c6c43adf9ca6c7edbdd1, type: 2}
   CreateBtn: {fileID: 0}
-  buildingPrefab: {fileID: 4206524632197453703, guid: 2a881836b9739a640adc506feb21726b, type: 3}
+  allBuildings:
+  - buildingType: 13
+    gameObj: {fileID: 6722270565074506463, guid: a88c4c2105066f64c950fb92ccfe874f, type: 3}
+  - buildingType: 14
+    gameObj: {fileID: 1851598442359309195, guid: 5aa88c71fc0820d41b5fca4bf07182ce, type: 3}
+  - buildingType: 1
+    gameObj: {fileID: 8611055196929779094, guid: 8904d7b43c80db84f9d64e44940284e6, type: 3}
+  - buildingType: 0
+    gameObj: {fileID: 3742394384904180635, guid: 9795729bfb6c49345a57a490c66ec68f, type: 3}
 --- !u!1 &8875754661389686521
 GameObject:
   m_ObjectHideFlags: 0

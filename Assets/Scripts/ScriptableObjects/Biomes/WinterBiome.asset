@@ -9,36 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00ec33a16b384f949992a1c72202514a, type: 3}
+  m_Script: {fileID: 11500000, guid: d93a3bb501d4d6a449cc10eeabfb4d6d, type: 3}
   m_Name: WinterBiome
   m_EditorClassIdentifier: Assembly-CSharp::BiomeConfig
-<<<<<<< HEAD
-  biomeName: Winter biome
+  biomeName: WinterBiome
   deepWater: {fileID: 2290437110376421325, guid: 3216ef4c59fa3e64985d839d56c803d4, type: 3}
-  groundCenter: {fileID: 1494329712286415968, guid: 693b319c7911e92469cf7dd0e4bc7479, type: 3}
-  groundInnerCorner: {fileID: 1494329712286415968, guid: 693b319c7911e92469cf7dd0e4bc7479, type: 3}
-  groundOuterCorner: {fileID: 1566329869459371211, guid: d807e0040b0b11e439e73731e8c319f2, type: 3}
-  groundEdge: {fileID: 976623109631461210, guid: 6635921368b3e7148b40b2f13261ae10, type: 3}
-  groundTip: {fileID: 2746414278990556197, guid: eedccae52ce37a4409cc4025d1cccf60, type: 3}
-  groundIsolated: {fileID: 2746414278990556197, guid: eedccae52ce37a4409cc4025d1cccf60, type: 3}
-=======
-  biomeName: Winter_biome
-  deepWater: {fileID: 6025741128080247136, guid: a9c8d36aec389cb4c9316be9eccf2852, type: 3}
-  groundCenter: {fileID: 919132149155446097, guid: 9e20ac16d80b3a6459e685fa7f44ee2b, type: 3}
-  groundInnerCorner: {fileID: 919132149155446097, guid: 76633e9d91e2207428566f2d5470168c, type: 3}
-  groundOuterCorner: {fileID: 919132149155446097, guid: e49a5360fc54ae441bfae9b695290ee5, type: 3}
-  groundEdge: {fileID: 919132149155446097, guid: 5d9f4656bb379d24ea58dc97ab3c28c5, type: 3}
-  groundTip: {fileID: 919132149155446097, guid: 6e32d7b4383ab8f4ab97a15a7339ef26, type: 3}
-  groundIsolated: {fileID: 919132149155446097, guid: 404b65c6364114f438fbab8d0a3101c0, type: 3}
->>>>>>> 02bb60276d8741140d7d3407547dae73eabf4beb
+  groundCenter: {fileID: 3532077537554340196, guid: 487228b2fd9f1f44baa895f42d409bec, type: 3}
+  groundInnerCorner: {fileID: 3532077537554340196, guid: 487228b2fd9f1f44baa895f42d409bec, type: 3}
+  groundOuterCorner: {fileID: 6481682753568029756, guid: efd25485f7e697347af5c6baa55e7349, type: 3}
+  groundEdge: {fileID: 4294009390727758746, guid: 4443c9bef8d438b4bb7a1ad50f4c48c3, type: 3}
+  groundTip: {fileID: 706715177306691372, guid: 1ab35a2beca4b844cb80fb11bfd1aa3e, type: 3}
+  groundIsolated: {fileID: 6992757842027661123, guid: eedccae52ce37a4409cc4025d1cccf60, type: 3}
   treesPrefabs:
-  - {fileID: 892875123539173657, guid: 6a2e1aa6dae343640ba4333ab178e1ff, type: 3}
-  - {fileID: 4083015108753271637, guid: c321c02672b708740a312d3e426a0ba0, type: 3}
+  - {fileID: 343246229111181180, guid: 6a2e1aa6dae343640ba4333ab178e1ff, type: 3}
+  - {fileID: 1152544432188394895, guid: c321c02672b708740a312d3e426a0ba0, type: 3}
   rocksPrefab:
-  - {fileID: 9098372445632920746, guid: e0e3a2a5fce1bdf4b8f422bf66a7419d, type: 3}
-  - {fileID: 5855330142500161652, guid: e02c03bc2a0eda44fbca233d17a7e0f6, type: 3}
+  - {fileID: 7556881467319172818, guid: e0e3a2a5fce1bdf4b8f422bf66a7419d, type: 3}
+  - {fileID: 268964141074380962, guid: e02c03bc2a0eda44fbca233d17a7e0f6, type: 3}
   goldsPrefab:
-  - {fileID: 5255651349835760389, guid: 976da66dd8ffd5a489d3eeb3a90e4128, type: 3}
-  - {fileID: 1486499820566766012, guid: fc46bfa645f06ed4eb0f83a51080ecf7, type: 3}
+  - {fileID: 1018063767938897647, guid: 976da66dd8ffd5a489d3eeb3a90e4128, type: 3}
+  - {fileID: 343246229111181180, guid: 6a2e1aa6dae343640ba4333ab178e1ff, type: 3}
   grassPrefabs:
-  - {fileID: 3807321834727803474, guid: d99fce1a4e0efb24c9e2c62448d33626, type: 3}
+  - {fileID: 8885892193763706983, guid: 2ba6c9ec58fe32a4293592a1de2c564c, type: 3}
