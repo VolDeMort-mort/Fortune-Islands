@@ -102,3 +102,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Surface
   selectionRing: {fileID: 0}
+  OwnerPlayerID: 0
+  OwnerPlayerID: 0

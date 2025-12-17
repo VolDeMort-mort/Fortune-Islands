@@ -57,7 +57,7 @@ public class WorldMap
 
         CellData cell = Grid[x, z];
 
-        if (cell.Type != CellType.Ground) return false;
+        // if (cell.Type != CellType.Ground) return false;
         if (cell.OccupyingObject != null) return false;
 
         return true;

@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 33fdb39b8285d9944b9c1f8941ccd2c3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 33fdb39b8285d9944b9c1f8941ccd2c3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -102,8 +102,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Structure
   selectionRing: {fileID: 0}
+  OwnerPlayerID: 0
+  costs: []
   footprint:
-  - {x: 0, y: 0}
-  - {x: 0, y: 1}
-  - {x: 0, y: 2}
-  - {x: 1, y: 2}
+  - offset: {x: 0, y: 0}
+    requiredSurface: 0
+  - offset: {x: 0, y: 0}
+    requiredSurface: 1
+  - offset: {x: 0, y: 0}
+    requiredSurface: 1
+  - offset: {x: 0, y: 0}
+    requiredSurface: 0

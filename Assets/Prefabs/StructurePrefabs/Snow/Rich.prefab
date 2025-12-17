@@ -9,12 +9,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 537f38988cd3df6459bd6974a6a032a8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.01042567
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 537f38988cd3df6459bd6974a6a032a8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.01442567
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 537f38988cd3df6459bd6974a6a032a8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 537f38988cd3df6459bd6974a6a032a8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 537f38988cd3df6459bd6974a6a032a8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -78,7 +86,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Structure
   selectionRing: {fileID: 0}
+  OwnerPlayerID: 0
+  costs:
+  - type: 2
+    amount: 2
   footprint:
-  - {x: 0, y: 0}
-  - {x: 0, y: 1}
-  - {x: 1, y: 1}
+  - offset: {x: 0, y: 0}
+    requiredSurface: 1
+  - offset: {x: 0, y: 1}
+    requiredSurface: 1
+  - offset: {x: -1, y: 1}
+    requiredSurface: 1

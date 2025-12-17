@@ -1,224 +1,139 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using System.Collections.Generic;
-using System;
-using TMPro.EditorUtilities;
 
 public class BuildingManager : IManager
 {
     [System.Serializable]
-    public struct BuildingTypeObj
-    {
-        public BuildingTypes buildingType;
-        public GameObject gameObj;
-    }
+    public class BuildingTypeObj { public BuildingTypes buildingType; public GameObject gameObj; }
 
-    [Header("References")]
-    public MapManager mapManager;
-    private Camera _cam;
-    public LayerMask groundLayer; // Layer for the mouse raycast (Terrain/Ground)
-
-    [Header("Build settings")]
-    public Material validMaterial;   // Transparent Green
-    public Material invalidMaterial; // Transparent Red
-
-    [Header("Placing settings")]
+    [Header("Configuration")]
     public List<BuildingTypeObj> allBuildings;
-    // public Dictionary<BuildingTypes, GameObject> allBuildings;
-    private GameObject _currentGhost;
+    public LayerMask groundLayer;
+    
+    [Header("Visual Settings")]
+    public Material validMaterial;
+    public Material invalidMaterial;
+
+    // --- Sub-Systems ---
+    private PlacementValidator _validator; // Logic
+    private PlacementRenderer _pRenderer; // Visuals (Ghost + Highlights)
+    
+    // --- State ---
     private GameObject _prefabToBuild;
     private bool _isBuilding = false;
-    private float _currentYRotation = 0f;
-    private Renderer[] _ghostRenderers;
+    private Camera _cam;
+
+    bool _isActive = false;
 
     public override void Initialize(IslandController controller)
     {
         base.Initialize(controller);
         _cam = Camera.main;
         
+        // Initialize Sub-Systems
+        _validator = new PlacementValidator(island.mapManager);
+        _pRenderer = new PlacementRenderer(validMaterial, invalidMaterial, groundLayer);
     }
 
-    // void Start()
-    // {
-    //     if (CreateBtn != null)
-    //         CreateBtn.onClick.AddListener(StartPlacingBuilding);
+        public void SetActive(bool isActive)
+    {
+        this._isActive = isActive;
+        
+        // If phase ended while ghost was active, cancel it
+        if (!isActive && _isBuilding)
+        {
+            CancelBuilding();
+        }
+    }
 
-    // }
     void Update()
     {
-        if (!_isBuilding || _currentGhost == null) return;
+        if (!_isBuilding) return;
 
-        // 1. Cancel Build on Right Click or Escape
+        // 1. Cancel?
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
         {
             CancelBuilding();
             return;
         }
-    
 
-        // 2. Raycast to find mouse position on map
+        // 2. Rotate?
+        if (Input.GetKeyDown(KeyCode.R)) _pRenderer.RotateGhost();
+
+        // 3. Main Loop
         Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, 1000f, groundLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer))
         {
-            // 3. Snap to Grid
             int x = Mathf.RoundToInt(hit.point.x);
             int z = Mathf.RoundToInt(hit.point.z);
+            float rotation = _pRenderer.GetRotation();
 
-            // Update Ghost Position (Height 1f to match your resources)
-            Vector3 targetPosition = (_currentYRotation == 0 || _currentYRotation == 180) ? new Vector3(x + 0.5f, 1f, z) : new Vector3(x, 1f, z + 0.5f);
-            _currentGhost.transform.position = targetPosition;
-            _currentGhost.transform.rotation = Quaternion.Euler(0, _currentYRotation, 0);
-            
-            Structure ghostScript = _currentGhost.GetComponent<Structure>();            
-            bool isValid = IsAreaValid(x, z, ghostScript);
-            UpdateGhostColor(isValid);
+            // A. LOGIC: Is this valid?
+            Structure script = _prefabToBuild.GetComponent<Structure>();
+            bool isValid = _validator.Validate(x, z, script, rotation);
 
-            // 4. Debugging: Draw the footprint in Scene View
-            DrawDebugFootprint(x, z, ghostScript);
-            Debug.Log($"Building");
-            
-            // 5. Build on Left Click
-            if (Input.GetMouseButtonDown(0))
+            // B. VISUALS: Show me! (Ghost + Green/Red Tiles)
+            _pRenderer.UpdateGhost(new Vector3(x, 1f, z), rotation, isValid);
+            _pRenderer.UpdateHighlights(x, z, script, rotation, isValid);
+
+            // C. ACTION: Build?
+            if (Input.GetMouseButtonDown(0) && isValid && !EventSystem.current.IsPointerOverGameObject())
             {
-                // Prevent clicking through UI
-                if (EventSystem.current.IsPointerOverGameObject()) return;
-
-                if (isValid)
+                if (island.resourceManager.TrySpendResources(script.costs))
                 {
-                    PlaceBuilding(x, z);
+                    CommitBuild(x, z, rotation);
                 }
-                else
-                {
-                    Debug.Log("Cannot build here!");
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                RotateBuilding();
             }
         }
     }
 
-    public void StartPlacingBuilding(BuildingTypes requestedType)
+    public void StartPlacingBuilding(BuildingTypes type)
     {
         if (_isBuilding) CancelBuilding();
 
-        foreach(var pair in allBuildings)
-        {
-            if (pair.buildingType == requestedType)
-            {
-                _prefabToBuild = pair.gameObj;
-                break;
-            }
-        }
-        if (_prefabToBuild == null)
-        {
-            Debug.Log($"Building {requestedType} was not found in the list");
-        }
+        var target = allBuildings.Find(b => b.buildingType == type);
+        if (target == null) return;
 
+        _prefabToBuild = target.gameObj;
         _isBuilding = true;
-
-        // Create the ghost visual
-        _currentGhost = Instantiate(_prefabToBuild);
         
-        // Disable collider so the raycast doesn't hit the ghost itself
-        Collider[] colliders = _currentGhost.GetComponentsInChildren<Collider>();
-        foreach (var col in colliders) col.enabled = false;
-
-        // Get renderers to change color later
-        _ghostRenderers = _currentGhost.GetComponentsInChildren<Renderer>();
+        // Delegate visual setup
+        _pRenderer.SpawnGhost(_prefabToBuild);
     }
 
     private void CancelBuilding()
     {
         _isBuilding = false;
-        if (_currentGhost != null) Destroy(_currentGhost);
         _prefabToBuild = null;
-    }
-
-    private void UpdateGhostColor(bool isValid)
-    {
-        Material targetMat = isValid ? validMaterial : invalidMaterial;
         
-        foreach (var r in _ghostRenderers)
-        {
-            r.material = targetMat;
-        }
+        // Delegate cleanup
+        _pRenderer.ClearGhost();
+        _pRenderer.ClearHighlights();
     }
 
-    private void PlaceBuilding(int x, int z)
+    private void CommitBuild(int x, int z, float rotation)
     {
-
-        GameObject newBuildingObj = Instantiate(_prefabToBuild, 
-            (_currentYRotation == 0 || _currentYRotation == 180) ? new Vector3(x + 0.5f, 1f, z) : new Vector3(x, 1f, z + 0.5f),
-            Quaternion.Euler(0, _currentYRotation, 0), 
-            mapManager.worldContainer
+        // 1. Instantiate Real Object
+        GameObject finalObj = Instantiate(_prefabToBuild, 
+            new Vector3(x, 1f, z), 
+            Quaternion.Euler(0, rotation, 0), 
+            island.worldContainer
         );
 
-        Structure structureScript = newBuildingObj.GetComponent<Structure>();
-        List<Vector2Int> shape = structureScript.GetRotatedFootprint(_currentYRotation);
-
-        foreach (Vector2Int offset in shape)
+        // 2. Update Map Data
+        Structure script = finalObj.GetComponent<Structure>();
+        foreach (var tile in script.GetRotatedFootprint(rotation))
         {
-            int targetX = x + offset.x;
-            int targetZ = z + offset.y;
-            if (mapManager.map.isPlacable(targetX, targetZ)) {
-                Debug.Log($"Occupying Cell: {targetX}, {targetZ}");
-                mapManager.map.GetCell(targetX, targetZ).OccupyingObject = structureScript;
-            }        }
+            island.mapManager.map.GetCell(x + tile.offset.x, z + tile.offset.y).OccupyingObject = script;
+        }
+
+        // 3. Initialize Components
+        foreach (var comp in finalObj.GetComponents<IBuildingFeature>())
+        {
+            comp.Initialize(island);
+        }
 
         CancelBuilding();
-        mapManager.map.debugGrid();
-    }
-
-    public void RotateBuilding()
-    {
-        if (!_isBuilding || _currentGhost == null) return;
-
-        _currentYRotation += 90f;
-        
-        if (_currentYRotation >= 360f) _currentYRotation = 0f;
-
-        _currentGhost.transform.rotation = Quaternion.Euler(0, _currentYRotation, 0);
-    }
-
-    private bool IsAreaValid(int pivotX, int pivotZ, Structure buildingScript)
-    {
-        // Get the specific shape based on current rotation
-        List<Vector2Int> shape = buildingScript.GetRotatedFootprint(_currentYRotation);
-
-        foreach (Vector2Int offset in shape)
-        {
-            int targetX = pivotX + offset.x;
-            int targetZ = pivotZ + offset.y;
-
-            // A. Check Bounds
-            if (targetX < 0 || targetX >= mapManager.mapSize.x || 
-                targetZ < 0 || targetZ >= mapManager.mapSize.y) 
-                return false;
-
-            // B. Check Cell Availability
-            CellData cell = mapManager.map.GetCell(targetX, targetZ);
-
-            if (cell.Type != CellType.Ground) return false;
-            if (cell.OccupyingObject != null) return false;
-        }
-        return true;
-    }
-
-    void DrawDebugFootprint(int x, int z, Structure script)
-    {
-        List<Vector2Int> shape = script.GetRotatedFootprint(_currentYRotation);
-        foreach (Vector2Int offset in shape)
-        {
-            // Draw a Red Box at every tile the logic THINKS is occupied
-            Vector3 center = new Vector3(x + offset.x, 1.5f, z + offset.y);
-            Debug.DrawRay(center, Vector3.up * 2, Color.red);
-            Debug.DrawLine(center + Vector3.left*0.4f, center + Vector3.right*0.4f, Color.red);
-        }
     }
 }

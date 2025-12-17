@@ -2,14 +2,22 @@ using UnityEngine;
 
 public class TileService
 {    
-    WorldMap map;
 
-    public TileService(WorldMap map)
+    public void RotateMapTiles(WorldMap map)
     {
-        this.map = map;
+        for (int x = 0; x < map.mapSize.x; x++)
+        {
+            for (int y = 0; y < map.mapSize.y; y++)
+            {
+                if (map.GetCell(x, y).Type == CellType.Ground)
+                {
+                    CalculateTileVariation(map, x, y);
+                }
+            }
+        }
     }
 
-    public void CalculateTileVariation(int x, int y)
+    public void CalculateTileVariation(WorldMap map, int x, int y)
     {
         // Top(1), Right(2), Bottom(4), Left(8)
         int mask = 0;
@@ -59,7 +67,7 @@ public class TileService
         }
     } 
 
-    public Quaternion GetRotationForCell(int x, int y, int mask, TileVariation variation)
+    public Quaternion GetRotationForCell(WorldMap map, int x, int y, int mask, TileVariation variation)
     {
         float angle = 0f;
 
