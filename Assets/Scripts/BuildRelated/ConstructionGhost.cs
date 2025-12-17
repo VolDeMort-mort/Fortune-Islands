@@ -36,6 +36,13 @@ public class ConstructionGhost
         _ghostObj.transform.rotation = Quaternion.Euler(0, _currentYRotation, 0);
     }
 
+    public void SetRotation(float rotation)
+    {
+        _currentYRotation = rotation;
+        _ghostObj.transform.rotation = Quaternion.Euler(0, _currentYRotation, 0);
+
+    }
+
     public void SetState(bool isValid)
     {
         Material target = isValid ? _validMat : _invalidMat;

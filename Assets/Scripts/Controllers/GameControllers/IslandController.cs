@@ -27,9 +27,14 @@ public class IslandController : MonoBehaviour
         diceManager.Initialize(this);
         diceManager.Initialize(this);
         unitManager.Initialize(this);
+
+
+           // Optional: Spawn 1 starting villager randomly
+            unitManager.SpawnUnitRandomly();
+
     }
 
-// Called by the State Machine (GameManager)
+    // Called by the State Machine (GameManager)
     public void OnPhaseChanged(GameState newPhase)
     {
         switch (newPhase)
@@ -48,7 +53,7 @@ public class IslandController : MonoBehaviour
             case WarState:
                 Debug.Log($"Island {PlayerID}: War Started!");
                 buildManager.SetActive(false);
-                if (unitManager != null) unitManager.ExecuteCombatTurn();
+                if (unitManager != null) unitManager.SetWarPhase(true);
                 break;
         }
     }

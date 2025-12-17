@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class GameManager : MonoBehaviour
     public RollState rollState;
     public WarState warState;
 
+    
+    public Button changeStateBtn;
+
     // Track active islands
     public List<IslandController> AllIslands { get; private set; } = new List<IslandController>();
 
@@ -24,6 +28,8 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         
+        changeStateBtn.onClick.AddListener(()=>{ChangeState(warState);});
+
         // Initialize States
         buildState = new BuildState(this);
         rollState = new RollState(this);

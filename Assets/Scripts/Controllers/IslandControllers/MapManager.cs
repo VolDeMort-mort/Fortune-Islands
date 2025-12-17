@@ -57,8 +57,6 @@ public class MapManager : IManager
         _tileService.RotateMapTiles(map);
         _resourceGenService.GenerateResourceData(map, currentBiome, mapConfig);
         _renderer.RenderMap(map, worldContainer, currentBiome, _tileService, island.PlayerID);
-
-        SpawnVillager();     
     }
 
     // void ClearWorld()
@@ -81,40 +79,40 @@ public class MapManager : IManager
 
 
 
-    void SpawnVillager()
-    {
-        if (map == null)
-        {
-            Debug.LogError("Generate the map first!");
-            return;
-        }
+    // void SpawnVillager()
+    // {
+    //     if (map == null)
+    //     {
+    //         Debug.LogError("Generate the map first!");
+    //         return;
+    //     }
 
-        // Try 100 times to find a random empty spot
-        for (int i = 0; i < 100; i++)
-        {
-            int rx = UnityEngine.Random.Range(0, map.mapSize.x);
-            int ry = UnityEngine.Random.Range(0, map.mapSize.y);
-            CellData cell = map.GetCell(rx, ry);
+    //     // Try 100 times to find a random empty spot
+    //     for (int i = 0; i < 100; i++)
+    //     {
+    //         int rx = UnityEngine.Random.Range(0, map.mapSize.x);
+    //         int ry = UnityEngine.Random.Range(0, map.mapSize.y);
+    //         CellData cell = map.GetCell(rx, ry);
 
-            // Check if valid spawn point (Ground + No Tree/Rock + No other Villager)
-            if (cell.Type == CellType.Ground && cell.OccupyingObject == null)
-            {
-                Vector3 spawnPos = new Vector3(rx, 2f, ry);
-                GameObject unitObj = Instantiate(villagerPrefab, worldContainer);
+    //         // Check if valid spawn point (Ground + No Tree/Rock + No other Villager)
+    //         if (cell.Type == CellType.Ground && cell.OccupyingObject == null)
+    //         {
+    //             Vector3 spawnPos = new Vector3(rx, 2f, ry);
+    //             GameObject unitObj = Instantiate(villagerPrefab, worldContainer);
                 
-                unitObj.transform.localPosition = spawnPos; 
+    //             unitObj.transform.localPosition = spawnPos; 
                 
-                // Initialize 
-                VillagerController controller = unitObj.GetComponent<VillagerController>();
-                if (controller != null)
-                {
-                    controller.Initialize(this, new Vector2Int(rx, ry));
-                }
+    //             // Initialize 
+    //             VillagerController controller = unitObj.GetComponent<VillagerController>();
+    //             if (controller != null)
+    //             {
+    //                 controller.Initialize(this, new Vector2Int(rx, ry));
+    //             }
                 
-                Debug.Log($"Spawned Villager at {rx}, {ry}");
-                return;
-            }
-        }
-        Debug.LogWarning("Could not find empty spot for Villager.");
-    }
+    //             Debug.Log($"Spawned Villager at {rx}, {ry}");
+    //             return;
+    //         }
+    //     }
+    //     Debug.LogWarning("Could not find empty spot for Villager.");
+    // }
 }

@@ -31,7 +31,7 @@ public class PlacementRenderer
     {
         if (_ghost == null) return;
         _ghost.Move(position);
-        _ghost.Rotate90();
+        _ghost.SetRotation(rotation);
         _ghost.SetState(isValid);
     }
 

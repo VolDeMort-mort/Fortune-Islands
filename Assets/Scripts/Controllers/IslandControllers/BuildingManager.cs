@@ -134,6 +134,20 @@ public class BuildingManager : IManager
             comp.Initialize(island);
         }
 
+
+        // UNIT SPAWN
+        Vector2Int spawnPos = new Vector2Int(x + 1, z);
+
+        if (island.mapManager.map.isPlacable(spawnPos.x, spawnPos.y))
+        {
+            island.unitManager.SpawnUnit(island.unitManager.warriorData, spawnPos);
+        }
+        else
+        {
+            // Fallback: Spawn randomly if door is blocked
+            island.unitManager.SpawnUnitRandomly();
+        }
+
         CancelBuilding();
     }
 }
