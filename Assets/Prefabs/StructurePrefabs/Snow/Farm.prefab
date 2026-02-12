@@ -112,11 +112,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2749bbecd5e042a4083440b1cb0df6cb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2749bbecd5e042a4083440b1cb0df6cb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2749bbecd5e042a4083440b1cb0df6cb, type: 3}
       propertyPath: m_LocalRotation.y
@@ -128,7 +128,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2749bbecd5e042a4083440b1cb0df6cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2749bbecd5e042a4083440b1cb0df6cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -180,6 +180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Structure
   selectionRing: {fileID: 5986289884565205168, guid: 1b5e625c12b36d54b8dc3781e624f159, type: 3}
   OwnerPlayerID: 0
+  costs: []
   footprint:
   - offset: {x: 0, y: 0}
     requiredSurface: 0

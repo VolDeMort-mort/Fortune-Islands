@@ -107,9 +107,9 @@ MonoBehaviour:
   footprint:
   - offset: {x: 0, y: 0}
     requiredSurface: 0
-  - offset: {x: 0, y: 0}
+  - offset: {x: 0, y: 1}
     requiredSurface: 1
-  - offset: {x: 0, y: 0}
+  - offset: {x: 1, y: 1}
     requiredSurface: 1
-  - offset: {x: 0, y: 0}
+  - offset: {x: 1, y: 2}
     requiredSurface: 0

@@ -55,7 +55,7 @@ public class MapManager : IManager
 
         _noiseService.GenerateTerrain(map, mapConfig);
         _tileService.RotateMapTiles(map);
-        _resourceGenService.GenerateResourceData(map, currentBiome, mapConfig);
+        // _resourceGenService.GenerateResourceData(map, currentBiome, mapConfig);
         _renderer.RenderMap(map, worldContainer, currentBiome, _tileService, island.PlayerID);
     }
 

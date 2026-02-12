@@ -64,7 +64,7 @@ public class UnitManager : IManager
             int ry = Random.Range(0, map.mapSize.y);
             if (map.GetCell(rx, ry).Type == CellType.Ground && map.GetCell(rx, ry).OccupyingObject == null)
             {
-                SpawnUnit(villagerData, new Vector2Int(rx, ry));
+                // SpawnUnit(villagerData, new Vector2Int(rx, ry));
                 return;
             }
         }

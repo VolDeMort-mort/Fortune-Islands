@@ -7,11 +7,5 @@ public class WarState : GameState
     public override void Enter()
     {
         Debug.Log("--- STATE: WAR ---");
-
-        foreach (var island in game.AllIslands)
-        {
-            // Assuming you have a UnitManager
-            // island.unitManager.ExecuteCombatTurn();
-        }
     }
 }
