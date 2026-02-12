@@ -8,7 +8,6 @@ public class RollState : GameState
     {
         Debug.Log("--- STATE: ROLL ---");
 
-        // Trigger the dice roll logic immediately
         foreach (var island in game.AllIslands)
         {
             if (island.diceManager != null)
@@ -17,7 +16,5 @@ public class RollState : GameState
             }
         }
         
-        // Auto-advance to next state after a short delay (animation)?
-        // Or wait for user input. Let's wait for user input in this design.
     }
 }

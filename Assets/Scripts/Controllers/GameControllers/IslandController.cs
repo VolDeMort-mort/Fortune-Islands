@@ -4,7 +4,7 @@ using UnityEngine;
 public class IslandController : MonoBehaviour
 {
     [Header("Identity")]
-    public int PlayerID; // 0 = P1, 1 = P2...
+    public int PlayerID;
     public bool isLocalPlayer;
     public Transform worldContainer;
 
@@ -29,12 +29,10 @@ public class IslandController : MonoBehaviour
         unitManager.Initialize(this);
 
 
-           // Optional: Spawn 1 starting villager randomly
             unitManager.SpawnUnitRandomly();
 
     }
 
-    // Called by the State Machine (GameManager)
     public void OnPhaseChanged(GameState newPhase)
     {
         switch (newPhase)
