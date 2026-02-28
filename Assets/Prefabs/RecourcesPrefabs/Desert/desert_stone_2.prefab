@@ -102,3 +102,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Resource
   selectionRing: {fileID: 0}
+  OwnerPlayerID: 0
