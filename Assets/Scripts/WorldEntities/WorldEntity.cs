@@ -4,6 +4,11 @@ public abstract class WorldEntity : MonoBehaviour, ISelectable
 {
     [Header("Visuals")]
     public GameObject selectionRing;
+    
+    
+    [Header("Identity")]
+    public int OwnerPlayerID;
+
 
     private void Start()
     {

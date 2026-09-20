@@ -1,25 +1,43 @@
 using UnityEngine;
-using Unity.Mathematics;
 using System.Collections.Generic;
-using Unity.Collections;
 
-public class Structure: WorldEntity
+[System.Serializable]
+public struct FootprintTile
 {
-    [Header("Shape Configuration")]
-    public List<Vector2Int> footprint = new List<Vector2Int> { Vector2Int.zero };
+    public Vector2Int offset;
+    public CellType requiredSurface; // Ground, Water, etc.
+}
 
-    public List<Vector2Int> GetRotatedFootprint(float rotationDegrees)
+[System.Serializable]
+public struct ResourceCost
+{
+    public ResourceType type;
+    public int amount;
+}
+
+public class Structure : WorldEntity
+{
+
+    [Header("Economy")]
+    public List<ResourceCost> costs; // Drag/Set costs in Inspector
+
+    [Header("Shape Configuration")]
+    // Replaces the old List<Vector2Int>
+    public List<FootprintTile> footprint = new List<FootprintTile>();
+
+    // Returns the full tile data (position + type), but with positions rotated
+    public List<FootprintTile> GetRotatedFootprint(float rotationDegrees)
     {
-        List<Vector2Int> rotatedFootprint = new List<Vector2Int>();
+        List<FootprintTile> rotatedFootprint = new List<FootprintTile>();
         
-        // Normalize angle to 0, 1, 2, 3 (for 90 degree steps)
+        // Normalize angle to 0, 1, 2, 3 steps
         int steps = Mathf.RoundToInt(rotationDegrees / 90f) % 4;
         if (steps < 0) steps += 4;
 
-        foreach (Vector2Int pos in footprint)
+        foreach (FootprintTile tile in footprint)
         {
-            int x = pos.x;
-            int y = pos.y;
+            int x = tile.offset.x;
+            int y = tile.offset.y;
             
             // Standard Grid Rotation Math
             for (int i = 0; i < steps; i++)
@@ -29,14 +47,14 @@ public class Structure: WorldEntity
                 y = -temp;
             }
             
-            rotatedFootprint.Add(new Vector2Int(x, y));
+            // Return new struct with Rotated X/Y but SAME required surface
+            rotatedFootprint.Add(new FootprintTile 
+            { 
+                offset = new Vector2Int(x, y), 
+                requiredSurface = tile.requiredSurface 
+            });
         }
 
         return rotatedFootprint;
     }
-
-    // public Vector3 PosistionOffset(int rotation, int x, int z)
-    // {
-    //     return (rotation == 0 || rotation == 180) ? new Vector3(x, 1f, z + 0.5f) : new Vector3(x, 1f, z + 0.5f);
-    // }
 }
