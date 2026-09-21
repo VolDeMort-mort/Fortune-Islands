@@ -6,7 +6,7 @@ using FortuneIslands.Core;
 using FortuneIslands.Game;
 using FortuneIslands.Building;
 
-namespace FortuneIslands.Resources
+namespace FortuneIslands.Economy.Stockpile
 {
     public class ResourceManager : BaseManager
     {
