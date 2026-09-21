@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 
+using FortuneIslands.Core;
 using FortuneIslands.Resources;
 
 namespace FortuneIslands.UI
@@ -24,7 +25,7 @@ namespace FortuneIslands.UI
 
         void GenerateList()
         {
-            Debug.Log($"Generating resource panel");
+            Log.Info($"Generating resource panel");
             // 1. Clear old placeholders
             foreach (Transform child in container)
             {
@@ -34,10 +35,10 @@ namespace FortuneIslands.UI
             // 2. Loop through all 8 resources
             foreach (var def in _resourceManager.allResources)
             {
-                Debug.Log($"Currently watching {def.type} {def.style}");
+                Log.Info($"Currently watching {def.type} {def.style}");
                 if (def.style == listStyle)
                 {
-                    Debug.Log($"Currently working on {def.type} {def.style}");
+                    Log.Info($"Currently working on {def.type} {def.style}");
                     GameObject newItem = Instantiate(resourceItemPrefab, container);
                     ResourceItemUI script = newItem.GetComponent<ResourceItemUI>();
 

@@ -20,7 +20,7 @@ namespace FortuneIslands.Economy
             // (Optimization: Cache this list if you have 100+ buildings)
             var providers = island.worldContainer.GetComponentsInChildren<DiceProvider>();
 
-            Debug.Log($"Found dices{providers.Length}");
+            Log.Info($"Found dices{providers.Length}");
             // 2. Roll every single die from every building
             foreach (var provider in providers)
             {
@@ -33,12 +33,12 @@ namespace FortuneIslands.Economy
                 // 3. Apply Resource immediately (or wait for animation)
                 if (result.amount > 0)
                 {
-                    Debug.Log($"Add resources: {result.type} {result.amount}");
+                    Log.Info($"Add resources: {result.type} {result.amount}");
                     island.resourceManager.AddResource(result.type, result.amount);
                 }
             }
 
-            Debug.Log($"Rolled {results.Count} dice.");
+            Log.Info($"Rolled {results.Count} dice.");
 
             // 4. Update UI
             OnDiceRolled?.Invoke(results);

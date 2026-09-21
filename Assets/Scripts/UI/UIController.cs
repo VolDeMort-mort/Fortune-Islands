@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using FortuneIslands.Core;
 using FortuneIslands.Game;
 using FortuneIslands.Building;
 
@@ -47,7 +48,7 @@ namespace FortuneIslands.UI
             foreach (var pair in placingBtns)
             {
                 pair.btn.onClick.AddListener(() => { localIsland.buildManager.StartPlacingBuilding(pair.buildingType); });
-                Debug.Log($"{pair.buildingType}");
+                Log.Info($"{pair.buildingType}");
             }
         }
 

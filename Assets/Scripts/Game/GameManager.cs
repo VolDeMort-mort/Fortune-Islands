@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+using FortuneIslands.Core;
 using FortuneIslands.CameraControl;
 using FortuneIslands.Game.GameStates;
 using FortuneIslands.UI;
@@ -41,7 +42,7 @@ namespace FortuneIslands.Game
 
         public void StartSinglePlayerGame()
         {
-            Debug.Log("Starting Single Player...");
+            Log.Info("Starting Single Player...");
 
             ClearOldGame();
 

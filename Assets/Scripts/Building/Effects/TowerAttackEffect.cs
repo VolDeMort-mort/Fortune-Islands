@@ -44,7 +44,7 @@ namespace FortuneIslands.Building.Effects
 
         void Attack(WorldEntity target)
         {
-            Debug.Log($"Tower shooting at {target.name}!");
+            Log.Info($"Tower shooting at {target.name}!");
             // target.TakeDamage(damage); 
         }
 
