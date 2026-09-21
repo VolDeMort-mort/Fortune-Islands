@@ -149,6 +149,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9a538415c98fdd14bb4810a6133b3657, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3824677246723943655}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9a538415c98fdd14bb4810a6133b3657, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4681625945333874235}
   m_SourcePrefab: {fileID: 100100000, guid: 9a538415c98fdd14bb4810a6133b3657, type: 3}
 --- !u!1 &3742394384904180635 stripped
 GameObject:
@@ -177,6 +180,19 @@ MonoBehaviour:
     requiredSurface: 1
   - offset: {x: 1, y: 0}
     requiredSurface: 1
+--- !u!114 &4681625945333874235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3742394384904180635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2fd5093276161147b237943b234ed82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FortuneIslands.Building.Effects.DiceProvider
+  diceToProvide: {fileID: 11400000, guid: 6a5d604cdb35aa04a8f461867f3d7198, type: 2}
 --- !u!4 &4081518493463284001 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9a538415c98fdd14bb4810a6133b3657, type: 3}
