@@ -1,25 +1,32 @@
 using UnityEngine;
-using System.Collections.Generic;
 
-using FortuneIslands.Game;
+
 using FortuneIslands.Economy;
 
 namespace FortuneIslands.Building.Effects
 {
-    public class DiceProvider : MonoBehaviour, IBuildingFeature
+    public class DiceProvider : MonoBehaviour, IBuildingFeature, IDiceSource
     {
         [Header("Dice Configuration")]
         // Drag your ScriptableObject here (e.g. "House Die")
         public Dice diceToProvide;
 
-        private bool _isActive = false;
+        private DiceManager _diceManager;
 
-        public void Initialize(IslandController island)
+        public Dice Dice=>diceToProvide;
+
+        public bool IsActive {get; private set;}
+
+        public void Initialize(BuildingContext ctx)
         {
-            _isActive = true;
-            // Register self if needed, or DiceManager can find me
+            _diceManager = ctx.Dice;
+            _diceManager.Register(this);
+            IsActive = true;
+        }
+        private void OnDestroy()
+        {
+            if (_diceManager != null) _diceManager.Unregister(this);
         }
 
-        public bool IsActive => _isActive;
     }
 }

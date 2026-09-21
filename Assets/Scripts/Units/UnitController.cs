@@ -9,7 +9,7 @@ using FortuneIslands.Units.PathFinding;
 
 namespace FortuneIslands.Units
 {
-    public class UnitController : MonoBehaviour
+    public class UnitController : MonoBehaviour, IGridOccupant
     {
         // --- Data Pattern ---
         public UnitStats stats;
@@ -128,10 +128,12 @@ namespace FortuneIslands.Units
             {
                 // Dynamic Collision Check
                 CellData nextCell = _mapRef.map.GetCell(step.x, step.y);
-                if (nextCell.OccupyingObject != null || (nextCell.OccupyingUnit != null && nextCell.OccupyingUnit != this))
+                if (nextCell.OccupyingObject != null ||
+                    (nextCell.OccupyingUnit != null && !ReferenceEquals(nextCell.OccupyingUnit, this)))
                 {
                     break; // Blocked
                 }
+
 
                 // Update Grid Logic
                 _mapRef.map.GetCell(_currentGridPos.x, _currentGridPos.y).OccupyingUnit = null;
@@ -170,5 +172,14 @@ namespace FortuneIslands.Units
             var entity = GetComponent<WorldEntity>();
             if (entity != null) entity.OnDeselect();
         }
+
+        private void OnDestroy()
+        {
+            if (_mapRef == null) return;
+
+            CellData cell = _mapRef.map.GetCell(_currentGridPos.x, _currentGridPos.y);
+            if (ReferenceEquals(cell.OccupyingUnit, this)) cell.OccupyingUnit = null;
+        }
+
     }
 }

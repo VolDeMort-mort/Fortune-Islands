@@ -8,7 +8,7 @@ using FortuneIslands.Units.Commands;
 
 namespace FortuneIslands.Units
 {
-    public class UnitManager : BaseManager
+    public class UnitManager : MonoBehaviour
     {
         [Header("Settings")]
         public LayerMask unitLayer;
@@ -27,6 +27,17 @@ namespace FortuneIslands.Units
         private bool _isWarPhase = false;
         private bool _isDragging = false;
         private Vector3 _dragStartPos;
+
+        private MapManager _mapManager;
+
+        private Transform _worldContainer;
+
+        public void Initialize(MapManager map, Transform worldContainer)
+        {
+            _mapManager = map;
+            _worldContainer = worldContainer;
+        }
+
 
         // --- GUI Drawing ---
         private void OnGUI()
@@ -49,14 +60,14 @@ namespace FortuneIslands.Units
         public void SpawnUnit(UnitStats type, Vector2Int gridPos)
         {
             // 1. Create Object
-            GameObject newUnit = Instantiate(type.unitPrefab, island.worldContainer);
+            GameObject newUnit = Instantiate(type.unitPrefab, _worldContainer);
 
             // 2. Add Controller
             UnitController ctrl = newUnit.GetComponent<UnitController>();
             if (ctrl == null) ctrl = newUnit.AddComponent<UnitController>();
 
             // 3. Initialize
-            ctrl.Initialize(island.mapManager, gridPos, type);
+            ctrl.Initialize(_mapManager, gridPos, type);
             _allUnits.Add(ctrl);
 
             // 4. Clean up our tracking lists once the unit dies, so we never
@@ -79,7 +90,7 @@ namespace FortuneIslands.Units
         {
 
 
-            WorldMap map = island.mapManager.map;
+            WorldMap map = _mapManager.map;
             for (int i = 0; i < 50; i++)
             {
                 int rx = Random.Range(0, map.mapSize.x);
@@ -198,7 +209,7 @@ namespace FortuneIslands.Units
                 if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundLayer))
                 {
                     // 1. Calculate Target Center
-                    Vector3 localPoint = island.worldContainer.InverseTransformPoint(hit.point);
+                    Vector3 localPoint = _worldContainer.InverseTransformPoint(hit.point);
                     int targetX = Mathf.RoundToInt(localPoint.x);
                     int targetZ = Mathf.RoundToInt(localPoint.z);
                     Vector2Int centerPos = new Vector2Int(targetX, targetZ);
@@ -239,7 +250,7 @@ namespace FortuneIslands.Units
 
                         Vector2Int p = new Vector2Int(center.x + x, center.y + y);
 
-                        if (island.mapManager.map.IsWalkable(p.x, p.y))
+                        if (_mapManager.map.IsWalkable(p.x, p.y))
                         {
                             if (!results.Contains(p)) results.Add(p);
                         }

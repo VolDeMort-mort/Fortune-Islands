@@ -1,6 +1,5 @@
 using UnityEngine;
 
-using FortuneIslands.Game;
 using FortuneIslands.Core;
 
 namespace FortuneIslands.Building.Effects
@@ -14,12 +13,11 @@ namespace FortuneIslands.Building.Effects
         public float attackSpeed = 1.5f;
         public GameObject projectilePrefab; // Optional
 
-        private IslandController _island;
         private float _attackCooldown = 0f;
 
-        public void Initialize(IslandController island)
+        public void Initialize(BuildingContext ctx)
         {
-            _island = island;
+
         }
 
         void Update()
