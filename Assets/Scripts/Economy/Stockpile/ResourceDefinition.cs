@@ -2,7 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FortuneIslands.Resources
+
+namespace FortuneIslands.Economy.Stockpile
 {
 
     [CreateAssetMenu(menuName = "Resources/Resource Definition")]

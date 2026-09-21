@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 using FortuneIslands.Core;
-using FortuneIslands.Resources;
+using FortuneIslands.Economy.Stockpile;
 using FortuneIslands.Map.Enums;
 
 namespace FortuneIslands.Building

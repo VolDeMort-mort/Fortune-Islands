@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 
 using FortuneIslands.Core;
-using FortuneIslands.Resources;
+using FortuneIslands.Economy.Stockpile;
 
 namespace FortuneIslands.UI
 {

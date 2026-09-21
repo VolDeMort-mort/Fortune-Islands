@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-using FortuneIslands.Resources;
+using FortuneIslands.Economy.Stockpile;
 using FortuneIslands.Game;
 
 namespace FortuneIslands.Building.Effects

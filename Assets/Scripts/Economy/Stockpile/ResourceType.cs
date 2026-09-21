@@ -1,5 +1,5 @@
 
-namespace FortuneIslands.Resources
+namespace FortuneIslands.Economy.Stockpile
 {
 
     public enum ResourceType

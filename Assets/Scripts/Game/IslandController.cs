@@ -1,7 +1,7 @@
 using UnityEngine;
 
 using FortuneIslands.Building;
-using FortuneIslands.Resources;
+using FortuneIslands.Economy.Stockpile;
 using FortuneIslands.Economy;
 using FortuneIslands.Units;
 using FortuneIslands.Map;
