@@ -159,6 +159,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2749bbecd5e042a4083440b1cb0df6cb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1704425539559140188}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2749bbecd5e042a4083440b1cb0df6cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2205855956703948289}
   m_SourcePrefab: {fileID: 100100000, guid: 2749bbecd5e042a4083440b1cb0df6cb, type: 3}
 --- !u!4 &6197408125656811621 stripped
 Transform:
@@ -219,3 +222,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 35.375042, y: 17.238098, z: 14.742527}
   m_Center: {x: 3.2160938, y: 0.0020706195, z: 3.2370079}
+--- !u!114 &2205855956703948289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6722270565074506463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2fd5093276161147b237943b234ed82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FortuneIslands.Building.Effects.DiceProvider
+  diceToProvide: {fileID: 11400000, guid: b32291b964e14f5479a6179065c9dd70, type: 2}
