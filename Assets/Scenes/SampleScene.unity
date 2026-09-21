@@ -538,6 +538,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 235990575}
   m_CullTransparentMesh: 1
+--- !u!1 &270355923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 270355925}
+  - component: {fileID: 270355924}
+  m_Layer: 0
+  m_Name: UnitManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &270355924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270355923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aad173f18140714d86c1f6868f25770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FortuneIslands.Units.UnitManager
+  villagerPrefab: {fileID: 3554155434395572469, guid: c4f04cd51cadd1b45b315d74170e38af, type: 3}
+  unitLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  dragThreshold: 10
+  villagerData: {fileID: 11400000, guid: ef5550dddb20a654880ea4014bd8c637, type: 2}
+  archerData: {fileID: 11400000, guid: 338ebbb64f0f0f1438e036265cdba112, type: 2}
+  warriorData: {fileID: 11400000, guid: 338ebbb64f0f0f1438e036265cdba112, type: 2}
+--- !u!4 &270355925
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270355923}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 23.38004, y: 4.095, z: 13.08355}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &285001182
 GameObject:
   m_ObjectHideFlags: 0
@@ -6268,3 +6323,4 @@ SceneRoots:
   - {fileID: 1583555195}
   - {fileID: 534426947}
   - {fileID: 951340700}
+  - {fileID: 270355925}
