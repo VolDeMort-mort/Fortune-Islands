@@ -24,19 +24,33 @@ namespace FortuneIslands.Game
 
         public void Initialize(int id)
         {
-
-            mapManager.worldContainer = worldContainer;
-
             PlayerID = id;
-            resourceManager.Initialize(this);
-            buildManager.Initialize(this);
-            mapManager.Initialize(this);
-            diceManager.Initialize(this);
-            unitManager.Initialize(this);
+            resourceManager.Initialize();
+            mapManager.Initialize(worldContainer, id);
+            diceManager.Initialize(resourceManager);
+            unitManager.Initialize(mapManager, worldContainer);
+            buildManager.Initialize(mapManager, resourceManager, diceManager, worldContainer);
+
+            buildManager.OnStructureBuilt += HandleStructureBuilt;
 
 
             unitManager.SpawnUnitRandomly();
-
         }
+
+        public void OnDestroy()
+        {
+            if (buildManager != null) buildManager.OnStructureBuilt -= HandleStructureBuilt;
+        }
+
+        private void HandleStructureBuilt(Structure structure, Vector2Int pivot)
+        {
+            Vector2Int spawnPos = new Vector2Int(pivot.x + 1, pivot.y);
+
+            if (mapManager.map.isPlacable(spawnPos.x, spawnPos.y))
+                unitManager.SpawnUnit(unitManager.warriorData, spawnPos);
+            else
+                unitManager.SpawnUnitRandomly();
+        }
+
     }
 }

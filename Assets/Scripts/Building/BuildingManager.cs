@@ -1,14 +1,17 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-using FortuneIslands.Core;
-using FortuneIslands.Game;
+using FortuneIslands.Map;
+using FortuneIslands.Economy.Stockpile;
+using FortuneIslands.Economy;
 using FortuneIslands.Building.Effects;
 
 namespace FortuneIslands.Building
 {
-    public class BuildingManager : BaseManager
+
+    public class BuildingManager : MonoBehaviour
     {
         [System.Serializable]
         public class BuildingTypeObj { public BuildingTypes buildingType; public GameObject gameObj; }
@@ -30,12 +33,26 @@ namespace FortuneIslands.Building
 
         bool _isActive = false;
 
-        public override void Initialize(IslandController controller)
+
+        private MapManager _mapManager;
+        private ResourceManager _resources;
+        private Transform _worldContainer;
+        private BuildingContext _ctx;
+
+        public event Action<Structure, Vector2Int> OnStructureBuilt;
+
+        public void Initialize(MapManager map, ResourceManager resources,DiceManager dice,Transform worldContainer)
         {
-            base.Initialize(controller);
+            _mapManager = map;
+            _resources = resources;
+            _worldContainer = worldContainer;
+
+            _ctx = new BuildingContext(resources, dice);
+
+
             _cam = Camera.main;
 
-            _validator = new PlacementValidator(island.mapManager);
+            _validator = new PlacementValidator(_mapManager);
             _pRenderer = new PlacementRenderer(validMaterial, invalidMaterial, groundLayer);
         }
 
@@ -76,7 +93,7 @@ namespace FortuneIslands.Building
 
                 if (Input.GetMouseButtonDown(0) && isValid && !EventSystem.current.IsPointerOverGameObject())
                 {
-                    if (island.resourceManager.TrySpendResources(script.costs))
+                    if (_resources.TrySpendResources(script.costs))
                     {
                         CommitBuild(x, z, rotation);
                     }
@@ -111,33 +128,24 @@ namespace FortuneIslands.Building
             GameObject finalObj = Instantiate(_prefabToBuild,
                 new Vector3(x, 1f, z),
                 Quaternion.Euler(0, rotation, 0),
-                island.worldContainer
+                _worldContainer
             );
 
             Structure script = finalObj.GetComponent<Structure>();
             foreach (var tile in script.GetRotatedFootprint(rotation))
             {
-                island.mapManager.map.GetCell(x + tile.offset.x, z + tile.offset.y).OccupyingObject = script;
+                _mapManager.map.GetCell(x + tile.offset.x, z + tile.offset.y).OccupyingObject = script;
             }
 
             foreach (var comp in finalObj.GetComponents<IBuildingFeature>())
             {
-                comp.Initialize(island);
+                comp.Initialize(_ctx);
             }
 
-
-            Vector2Int spawnPos = new Vector2Int(x + 1, z);
-
-            if (island.mapManager.map.isPlacable(spawnPos.x, spawnPos.y))
-            {
-                island.unitManager.SpawnUnit(island.unitManager.warriorData, spawnPos);
-            }
-            else
-            {
-                island.unitManager.SpawnUnitRandomly();
-            }
+            OnStructureBuilt?.Invoke(script, new Vector2Int(x, z));
 
             CancelBuilding();
+
         }
     }
 }

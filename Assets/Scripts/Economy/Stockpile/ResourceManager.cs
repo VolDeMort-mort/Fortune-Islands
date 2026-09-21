@@ -2,13 +2,10 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-using FortuneIslands.Core;
-using FortuneIslands.Game;
-using FortuneIslands.Building;
 
 namespace FortuneIslands.Economy.Stockpile
 {
-    public class ResourceManager : BaseManager
+    public class ResourceManager : MonoBehaviour
     {
         // --- NEW: Helper Struct for Inspector ---
         [System.Serializable]
@@ -34,9 +31,8 @@ namespace FortuneIslands.Economy.Stockpile
         // relying on Initialize() is safer for execution order.
         // private void Awake() { InitializeResources(); } 
 
-        public override void Initialize(IslandController controller)
+        public void Initialize()
         {
-            base.Initialize(controller);
             InitializeResources();
         }
 

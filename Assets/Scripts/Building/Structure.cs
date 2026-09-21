@@ -14,13 +14,6 @@ namespace FortuneIslands.Building
         public CellType requiredSurface; // Ground, Water, etc.
     }
 
-    [System.Serializable]
-    public struct ResourceCost
-    {
-        public ResourceType type;
-        public int amount;
-    }
-
     public class Structure : WorldEntity
     {
 

@@ -65,7 +65,7 @@ namespace FortuneIslands.Game
             if (id == 0)
             {
                 if (mainCamera != null) mainCamera.FocusOnTarget(obj.transform.position);
-                if (uiController != null) uiController.Initialize(island);
+                if (uiController != null) uiController.Initialize(island.resourceManager, island.buildManager);
             }
         }
 
