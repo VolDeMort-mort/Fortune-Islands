@@ -1,40 +1,47 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class MapResourceGenService
+using FortuneIslands.Map.Generation.Patterns;
+using FortuneIslands.Map.Enums;
+
+namespace FortuneIslands.Map.Generation
 {
-    public void GenerateResourceData(WorldMap map, BiomeConfig biome, MapConfig mapConfig)
+    public class MapResourceGenService
     {
-        ClearResources(map);
-        List<Vector2Int> groundTiles = map.GetGroundTiles();
-        if (groundTiles.Count == 0) return;
-
-        List<IGenerationPattern> generationSteps = new List<IGenerationPattern>();
-
-        generationSteps.Add(new ClusterPattern(MapResourceType.Tree, mapConfig.treeClusterCount, mapConfig.treeClusterRadius, mapConfig.treeClusterDensity));
-        
-        generationSteps.Add(new ClusterPattern(MapResourceType.Rock, mapConfig.rockClusterCount, mapConfig.rockClusterRadius, mapConfig.rockClusterDensity));
-        
-        generationSteps.Add(new ClusterPattern(MapResourceType.Gold, mapConfig.goldClusterCount, mapConfig.goldClusterRadius, mapConfig.goldClusterDensity));
-
-        generationSteps.Add(new RandomPattern(MapResourceType.Grass, mapConfig.grassDensity, true));
-
-
-        foreach (var pattern in generationSteps)
+        public void GenerateResourceData(WorldMap map, BiomeConfig biome, MapConfig mapConfig)
         {
-            pattern.Generate(map, groundTiles, biome);
-        }
-    }
+            ClearResources(map);
+            List<Vector2Int> groundTiles = map.GetGroundTiles();
+            if (groundTiles.Count == 0) return;
 
-    private void ClearResources(WorldMap map)
-    {
-        for (int x = 0; x < map.mapSize.x; x++)
-        {
-            for (int y = 0; y < map.mapSize.y; y++)
+            List<IGenerationPattern> generationSteps = new List<IGenerationPattern>();
+
+            generationSteps.Add(new ClusterPattern(MapResourceType.Tree, mapConfig.treeClusterCount, mapConfig.treeClusterRadius, mapConfig.treeClusterDensity));
+
+            generationSteps.Add(new ClusterPattern(MapResourceType.Rock, mapConfig.rockClusterCount, mapConfig.rockClusterRadius, mapConfig.rockClusterDensity));
+
+            generationSteps.Add(new ClusterPattern(MapResourceType.Gold, mapConfig.goldClusterCount, mapConfig.goldClusterRadius, mapConfig.goldClusterDensity));
+
+            generationSteps.Add(new RandomPattern(MapResourceType.Grass, mapConfig.grassDensity, true));
+
+
+            foreach (var pattern in generationSteps)
             {
-                if (map.GetCell(x, y).OccupyingObject != null){
-                    Object.Destroy(map.GetCell(x, y).OccupyingObject);
-                    map.GetCell(x, y).OccupyingObject = null;
+                pattern.Generate(map, groundTiles, biome);
+            }
+        }
+
+        private void ClearResources(WorldMap map)
+        {
+            for (int x = 0; x < map.mapSize.x; x++)
+            {
+                for (int y = 0; y < map.mapSize.y; y++)
+                {
+                    if (map.GetCell(x, y).OccupyingObject != null)
+                    {
+                        Object.Destroy(map.GetCell(x, y).OccupyingObject);
+                        map.GetCell(x, y).OccupyingObject = null;
+                    }
                 }
             }
         }

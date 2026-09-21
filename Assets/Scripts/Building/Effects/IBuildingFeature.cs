@@ -1,6 +1,12 @@
 // IBuildingFeature.cs
-public interface IBuildingFeature
+using FortuneIslands.Game;
+
+namespace FortuneIslands.Building.Effects
 {
-    // Called when the building is finished/placed
-    void Initialize(IslandController island);
+
+    public interface IBuildingFeature
+    {
+        // Called when the building is finished/placed
+        void Initialize(IslandController island);
+    }
 }

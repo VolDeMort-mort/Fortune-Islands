@@ -1,9 +1,15 @@
 using UnityEngine;
-public class BaseManager: MonoBehaviour
+
+using FortuneIslands.Game;
+
+namespace FortuneIslands.Core
 {
-    protected IslandController island;
-    public virtual void Initialize(IslandController controller)
+    public class BaseManager : MonoBehaviour
     {
-        island = controller;
+        protected IslandController island;
+        public virtual void Initialize(IslandController controller)
+        {
+            island = controller;
+        }
     }
 }

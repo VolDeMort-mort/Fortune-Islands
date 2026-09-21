@@ -1,6 +1,11 @@
 using UnityEngine;
 
-public class Resource: WorldEntity
+using FortuneIslands.Core;
+
+namespace FortuneIslands.WorldEntities
 {
-    
+    public class Resource : WorldEntity
+    {
+
+    }
 }

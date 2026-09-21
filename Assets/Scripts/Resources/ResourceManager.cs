@@ -2,6 +2,10 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
+using FortuneIslands.Core;
+using FortuneIslands.Game;
+using FortuneIslands.Building;
+
 namespace FortuneIslands.Resources
 {
     public class ResourceManager : BaseManager

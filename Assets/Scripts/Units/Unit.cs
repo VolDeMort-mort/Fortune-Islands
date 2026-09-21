@@ -1,30 +1,34 @@
 using UnityEngine;
 using System;
+using FortuneIslands.Core;
 
-public class Unit : WorldEntity
+namespace FortuneIslands.Units
 {
-    [Header("Stats")]
-    public int currentHealth = 100;
-    public int maxHealth = 100;
-
-    // Event for UI bars or death logic
-    public event Action OnDeath;
-
-    public void TakeDamage(int damage)
+    public class Unit : WorldEntity
     {
-        currentHealth -= damage;
-        // Visual feedback (Flash red, float text) goes here
-        Debug.Log($"{name} took {damage} dmg. HP: {currentHealth}");
+        [Header("Stats")]
+        public int currentHealth = 100;
+        public int maxHealth = 100;
 
-        if (currentHealth <= 0)
+        // Event for UI bars or death logic
+        public event Action OnDeath;
+
+        public void TakeDamage(int damage)
         {
-            Die();
-        }
-    }
+            currentHealth -= damage;
+            // Visual feedback (Flash red, float text) goes here
+            Debug.Log($"{name} took {damage} dmg. HP: {currentHealth}");
 
-    protected void Die()
-    {
-        OnDeath?.Invoke();
-        Destroy(gameObject);
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
+        }
+
+        protected void Die()
+        {
+            OnDeath?.Invoke();
+            Destroy(gameObject);
+        }
     }
 }

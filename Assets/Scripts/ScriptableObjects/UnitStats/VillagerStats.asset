@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b648b69fad78b1d43a987d1fc8a19550, type: 3}
+  m_Name: VillagerStats
+  m_EditorClassIdentifier: Assembly-CSharp::FortuneIslands.Units.UnitStats
+  unitName: Villager
+  unitPrefab: {fileID: 3554155434395572469, guid: c4f04cd51cadd1b45b315d74170e38af, type: 3}
+  moveSpeed: 3
+  maxHealth: 100
+  attackRange: 1.5
+  attackDamage: 10
+  attackSpeed: 1

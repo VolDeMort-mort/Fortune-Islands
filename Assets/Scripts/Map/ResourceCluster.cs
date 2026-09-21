@@ -1,29 +1,34 @@
 using UnityEngine;
 
-public class ResourceCluster
+using FortuneIslands.Map.Enums;
+
+namespace FortuneIslands.Map
 {
-    public Vector2 center;
-    public float radius;
-    public float density;
-    public MapResourceType MapResourceType;
-
-    public ResourceCluster(Vector2 center, float radius, MapResourceType type, float density)
+    public class ResourceCluster
     {
-        this.center = center;
-        this.radius = radius;
-        this.MapResourceType = type;
-        this.density = density;
-    }
+        public Vector2 center;
+        public float radius;
+        public float density;
+        public MapResourceType MapResourceType;
 
-    public float GetInfluence(int x, int z)
-    {
-        float dx = x - center.x;
-        float dz = z - center.y;
-        float dist = Mathf.Sqrt(dx * dx + dz * dz);
+        public ResourceCluster(Vector2 center, float radius, MapResourceType type, float density)
+        {
+            this.center = center;
+            this.radius = radius;
+            this.MapResourceType = type;
+            this.density = density;
+        }
 
-        if (dist > radius) return 0f;
+        public float GetInfluence(int x, int z)
+        {
+            float dx = x - center.x;
+            float dz = z - center.y;
+            float dist = Mathf.Sqrt(dx * dx + dz * dz);
 
-        float normalizedDist = dist / radius;
-        return (1f - normalizedDist) * density;
+            if (dist > radius) return 0f;
+
+            float normalizedDist = dist / radius;
+            return (1f - normalizedDist) * density;
+        }
     }
 }

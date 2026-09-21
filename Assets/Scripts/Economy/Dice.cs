@@ -1,34 +1,39 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[System.Serializable]
-public struct DiceFace
+using FortuneIslands.Resources;
+
+namespace FortuneIslands.Economy
 {
-    public ResourceType type; // e.g. Gold, Food
-    public int amount;        // e.g. 1, 2, 4
-    // public Sprite faceIcon;   // Visual for UI
-}
-
-[CreateAssetMenu(fileName = "NewDice", menuName = "Game/Dice Definition")]
-public class Dice : ScriptableObject
-{
-    public string diceName; // e.g. "Economy Die"
-    public Color diceColor = Color.white;
-
-
-    // A standard die has 6 faces
-    [Tooltip("Define exactly 6 faces for a standard die")]
-    public List<DiceFace> faces = new List<DiceFace>();
-
-    public DiceFace Roll()
+    [System.Serializable]
+    public struct DiceFace
     {
-        if (faces == null || faces.Count == 0)
-        {
-            Debug.LogWarning($"Dice '{diceName}' has no faces configured.");
-            return default;
-        }
+        public ResourceType type; // e.g. Gold, Food
+        public int amount;        // e.g. 1, 2, 4
+                                  // public Sprite faceIcon;   // Visual for UI
+    }
 
-        // Pick a random face
-        return faces[Random.Range(0, faces.Count)];
+    [CreateAssetMenu(fileName = "NewDice", menuName = "Game/Dice Definition")]
+    public class Dice : ScriptableObject
+    {
+        public string diceName; // e.g. "Economy Die"
+        public Color diceColor = Color.white;
+
+
+        // A standard die has 6 faces
+        [Tooltip("Define exactly 6 faces for a standard die")]
+        public List<DiceFace> faces = new List<DiceFace>();
+
+        public DiceFace Roll()
+        {
+            if (faces == null || faces.Count == 0)
+            {
+                Debug.LogWarning($"Dice '{diceName}' has no faces configured.");
+                return default;
+            }
+
+            // Pick a random face
+            return faces[Random.Range(0, faces.Count)];
+        }
     }
 }

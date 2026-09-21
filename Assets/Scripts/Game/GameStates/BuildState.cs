@@ -1,26 +1,31 @@
 using UnityEngine;
 
-public class BuildState : GameState
+using FortuneIslands.Game;
+
+namespace FortuneIslands.Game.GameStates
 {
-    public BuildState(GameManager game) : base(game) { }
-
-    public override void Enter()
+    public class BuildState : GameState
     {
-        Debug.Log("--- STATE: BUILD ---");
-        
+        public BuildState(GameManager game) : base(game) { }
 
-        foreach (var island in game.AllIslands)
+        public override void Enter()
         {
-            island.buildManager.SetActive(true);
-        }
-    }
+            Debug.Log("--- STATE: BUILD ---");
 
-    public override void Exit()
-    {
-        foreach (var island in game.AllIslands)
-        {
-            island.buildManager.SetActive(false);
+
+            foreach (var island in game.AllIslands)
+            {
+                island.buildManager.SetActive(true);
+            }
         }
-        
+
+        public override void Exit()
+        {
+            foreach (var island in game.AllIslands)
+            {
+                island.buildManager.SetActive(false);
+            }
+
+        }
     }
 }

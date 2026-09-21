@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class AttackCommand : IUnitCommand
+namespace FortuneIslands.Units.Commands
 {
-    private Unit _target;
-
-    public AttackCommand(Unit target)
+    public class AttackCommand : IUnitCommand
     {
-        _target = target;
-    }
+        private Unit _target;
 
-    public void Execute(UnitController unit)
-    {
-        // Tell the unit WHAT to do (Attack this specific object)
-        unit.StartAttacking(_target);
+        public AttackCommand(Unit target)
+        {
+            _target = target;
+        }
+
+        public void Execute(UnitController unit)
+        {
+            // Tell the unit WHAT to do (Attack this specific object)
+            unit.StartAttacking(_target);
+        }
     }
 }

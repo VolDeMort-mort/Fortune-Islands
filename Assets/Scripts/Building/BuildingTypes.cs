@@ -1,25 +1,28 @@
-public enum BuildingTypes
+namespace FortuneIslands.Building
 {
-    Cottage,
-    House,
-    Church,
-    Barracks,
-    SorcererTower,
-    Wall,
-    GuardTower, 
-    Hospital,
-    Cathedral,
-    WindMill,
-    LumberCamp,
-    StoneQuarry,
-    FishingShip,
-    Farm,
-    Dock,
-    University,
-    Storage,
-    Market,
-    ArcheryRange,
-    Lighthouse,
-    LandCamp,
-    Wonder
+    public enum BuildingTypes
+    {
+        Cottage,
+        House,
+        Church,
+        Barracks,
+        SorcererTower,
+        Wall,
+        GuardTower,
+        Hospital,
+        Cathedral,
+        WindMill,
+        LumberCamp,
+        StoneQuarry,
+        FishingShip,
+        Farm,
+        Dock,
+        University,
+        Storage,
+        Market,
+        ArcheryRange,
+        Lighthouse,
+        LandCamp,
+        Wonder
+    }
 }

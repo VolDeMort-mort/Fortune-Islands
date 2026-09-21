@@ -1,4 +1,9 @@
-public interface IUnitCommand
+
+namespace FortuneIslands.Units.Commands
 {
-    void Execute(UnitController unit);
+
+    public interface IUnitCommand
+    {
+        void Execute(UnitController unit);
+    }
 }

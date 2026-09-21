@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class RollState : GameState
+namespace FortuneIslands.Game.GameStates
 {
-    public RollState(GameManager game) : base(game) { }
-
-    public override void Enter()
+    public class RollState : GameState
     {
-        Debug.Log("--- STATE: ROLL ---");
+        public RollState(GameManager game) : base(game) { }
 
-        foreach (var island in game.AllIslands)
+        public override void Enter()
         {
-            if (island.diceManager != null)
+            Debug.Log("--- STATE: ROLL ---");
+
+            foreach (var island in game.AllIslands)
             {
-                island.diceManager.PerformRoll();
+                if (island.diceManager != null)
+                {
+                    island.diceManager.PerformRoll();
+                }
             }
+
         }
-        
     }
 }
