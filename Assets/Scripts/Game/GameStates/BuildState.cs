@@ -1,5 +1,6 @@
 using UnityEngine;
 
+using FortuneIslands.Core;
 using FortuneIslands.Game;
 
 namespace FortuneIslands.Game.GameStates
@@ -10,7 +11,7 @@ namespace FortuneIslands.Game.GameStates
 
         public override void Enter()
         {
-            Debug.Log("--- STATE: BUILD ---");
+            Log.Info("--- STATE: BUILD ---");
 
 
             foreach (var island in game.AllIslands)

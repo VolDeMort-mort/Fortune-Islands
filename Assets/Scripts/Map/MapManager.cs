@@ -44,7 +44,7 @@ namespace FortuneIslands.Map
             if (availableBiomes.Length > 0)
             {
                 currentBiome = availableBiomes[UnityEngine.Random.Range(0, availableBiomes.Length)];
-                Debug.Log($"Selected Biome: {currentBiome.biomeName}");
+                Log.Info($"Selected Biome: {currentBiome.biomeName}");
             }
             else
             {

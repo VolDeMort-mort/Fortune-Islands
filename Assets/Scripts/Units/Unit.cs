@@ -17,7 +17,7 @@ namespace FortuneIslands.Units
         {
             currentHealth -= damage;
             // Visual feedback (Flash red, float text) goes here
-            Debug.Log($"{name} took {damage} dmg. HP: {currentHealth}");
+            Log.Info($"{name} took {damage} dmg. HP: {currentHealth}");
 
             if (currentHealth <= 0)
             {

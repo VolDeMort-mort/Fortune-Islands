@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 using FortuneIslands.Resources;
+using FortuneIslands.Core;
 
 namespace FortuneIslands.Economy
 {

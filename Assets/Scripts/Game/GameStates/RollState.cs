@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using FortuneIslands.Core;
+
 namespace FortuneIslands.Game.GameStates
 {
     public class RollState : GameState
@@ -8,7 +10,7 @@ namespace FortuneIslands.Game.GameStates
 
         public override void Enter()
         {
-            Debug.Log("--- STATE: ROLL ---");
+            Log.Info("--- STATE: ROLL ---");
 
             foreach (var island in game.AllIslands)
             {

@@ -34,7 +34,7 @@ namespace FortuneIslands.Building.Effects
         //         _island.resourceManager.AddResource(resourceType, amountPerTick);
 
         //         // Optional: Pop up UI text here "+10 Gold"
-        //         Debug.Log($"Generated {amountPerTick} {resourceType}");
+        //         Log.Info($"Generated {amountPerTick} {resourceType}");
         //     }
         // }
     }
