@@ -7,7 +7,6 @@ using FortuneIslands.Map.Enums;
 
 namespace FortuneIslands.Units.PathFinding
 {
-
     public static class Pathfinding
     {
         // Returns null if no path found, or a list of steps if found
@@ -54,8 +53,7 @@ namespace FortuneIslands.Units.PathFinding
                 {
                     // Logic: specific to YOUR game (Check Collision)
                     CellData cellInfo = grid[neighbor.x, neighbor.y];
-                    bool isWalkable = cellInfo.Type == CellType.Ground && cellInfo.OccupyingObject == null;
-
+                    bool isWalkable = cellInfo.Type == CellType.Ground && cellInfo.OccupyingObject == null && cellInfo.OccupyingUnit == null;
                     // Exception: The Target tile might be "Occupied" by the target itself, so we allow it if it is the target
                     if (neighbor == targetNode) isWalkable = true;
 

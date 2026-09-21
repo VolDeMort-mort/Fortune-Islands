@@ -10,6 +10,20 @@ namespace FortuneIslands.WorldEntities
         private Material[] _originalMaterials;
         private bool _isHighlighted = false;
 
+        [Header("Selection")]
+        public Material selectionMaterial;
+
+
+        public override void OnSelect()
+        {
+            ToggleHighlight(true, selectionMaterial);
+        }
+
+        public override void OnDeselect()
+        {
+            ToggleHighlight(false, null);
+        }
+
         void Awake()
         {
             _renderer = GetComponentInChildren<Renderer>();

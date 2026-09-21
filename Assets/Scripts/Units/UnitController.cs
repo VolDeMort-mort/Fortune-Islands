@@ -101,9 +101,9 @@ namespace FortuneIslands.Units
             transform.localPosition = new Vector3(startPos.x, 1f, startPos.y);
 
             // 2. Register on Grid
-            if (_mapRef.map.GetCell(startPos.x, startPos.y).OccupyingObject == null)
+            if (_mapRef.map.GetCell(startPos.x, startPos.y).OccupyingUnit == null)
             {
-                _mapRef.map.GetCell(startPos.x, startPos.y).OccupyingObject = _unitComponent;
+                _mapRef.map.GetCell(startPos.x, startPos.y).OccupyingUnit = this;
             }
         }
 
@@ -128,14 +128,14 @@ namespace FortuneIslands.Units
             {
                 // Dynamic Collision Check
                 CellData nextCell = _mapRef.map.GetCell(step.x, step.y);
-                if (nextCell.OccupyingObject != null && nextCell.OccupyingObject != _unitComponent)
+                if (nextCell.OccupyingObject != null || (nextCell.OccupyingUnit != null && nextCell.OccupyingUnit != this))
                 {
                     break; // Blocked
                 }
 
                 // Update Grid Logic
-                _mapRef.map.GetCell(_currentGridPos.x, _currentGridPos.y).OccupyingObject = null;
-                nextCell.OccupyingObject = _unitComponent;
+                _mapRef.map.GetCell(_currentGridPos.x, _currentGridPos.y).OccupyingUnit = null;
+                nextCell.OccupyingUnit = this;
                 _currentGridPos = step;
 
                 // Visual Movement

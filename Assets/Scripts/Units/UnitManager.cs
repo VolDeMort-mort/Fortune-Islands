@@ -86,8 +86,11 @@ namespace FortuneIslands.Units
                 int ry = Random.Range(0, map.mapSize.y);
                 if (map.GetCell(rx, ry).Type == CellType.Ground && map.GetCell(rx, ry).OccupyingObject == null)
                 {
-                    SpawnUnit(villagerData, new Vector2Int(rx, ry));
-                    return;
+                    if (map.IsWalkable(rx, ry))
+                    {
+                        SpawnUnit(villagerData, new Vector2Int(rx, ry));
+                        return;
+                    }
                 }
             }
         }
@@ -236,7 +239,7 @@ namespace FortuneIslands.Units
 
                         Vector2Int p = new Vector2Int(center.x + x, center.y + y);
 
-                        if (island.mapManager.map.isPlacable(p.x, p.y))
+                        if (island.mapManager.map.IsWalkable(p.x, p.y))
                         {
                             if (!results.Contains(p)) results.Add(p);
                         }

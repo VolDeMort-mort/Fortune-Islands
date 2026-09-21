@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 using FortuneIslands.Core;
+using FortuneIslands.Units;
 
 namespace FortuneIslands.Selection
 {
@@ -35,6 +36,13 @@ namespace FortuneIslands.Selection
 
             if (Physics.Raycast(ray, out hit, 1000f, selectableLayer))
             {
+                if (hit.collider.GetComponentInParent<UnitController>() != null)
+                {
+                    DeselectCurrent();
+                    return;
+                }
+
+
                 ISelectable clickedObject = hit.collider.GetComponent<ISelectable>();
 
                 // Check hit

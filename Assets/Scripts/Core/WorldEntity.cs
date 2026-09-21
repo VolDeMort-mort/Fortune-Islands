@@ -18,13 +18,13 @@ namespace FortuneIslands.Core
             if (selectionRing != null) selectionRing.SetActive(false);
         }
 
-        public void OnSelect()
+        public virtual void OnSelect()
         {
             Debug.Log($"Selected: {gameObject.name}");
             if (selectionRing != null) selectionRing.SetActive(true);
         }
 
-        public void OnDeselect()
+        public virtual void OnDeselect()
         {
             Debug.Log($"Deselected: {gameObject.name}");
             if (selectionRing != null) selectionRing.SetActive(false);

@@ -63,6 +63,15 @@ namespace FortuneIslands.Map
 
             return true;
         }
+
+        public bool IsWalkable(int x, int z)
+        {
+            if (x < 0 || x >= mapSize.x || z < 0 || z >= mapSize.y)
+                return false;
+
+            CellData cell = Grid[x, z];
+            return cell.Type == CellType.Ground && cell.OccupyingObject == null && cell.OccupyingUnit == null;
+        }
         public List<Vector2Int> GetGroundTiles()
         {
             List<Vector2Int> list = new List<Vector2Int>();
