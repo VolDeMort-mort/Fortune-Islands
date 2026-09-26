@@ -1,19 +1,16 @@
-
-
 using FortuneIslands.Core;
 
-namespace FortuneIslands.Game.GameStates
+namespace FortuneIslands.Game.Phases
 {
-    public class BuildState : GameState
+    public class BuildPhase : PhaseHandler
     {
-        public BuildState(GameManager game) : base(game) { }
+        public BuildPhase(PhaseContext context) : base(context) { }
 
         public override void Enter()
         {
-            Log.Info("--- STATE: BUILD ---");
+            Log.Info("--- PHASE: BUILD ---");
 
-
-            foreach (var island in game.AllIslands)
+            foreach (var island in Context.Islands)
             {
                 island.buildManager.SetActive(true);
             }
@@ -21,11 +18,10 @@ namespace FortuneIslands.Game.GameStates
 
         public override void Exit()
         {
-            foreach (var island in game.AllIslands)
+            foreach (var island in Context.Islands)
             {
                 island.buildManager.SetActive(false);
             }
-
         }
     }
 }

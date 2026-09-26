@@ -9,6 +9,7 @@
         "FortuneIslands.Building",
         "FortuneIslands.UI",
         "FortuneIslands.CameraControl",
+        "FortuneIslands.Turns",
         "UnityEngine.UI"
     ],
     "includePlatforms": [],
