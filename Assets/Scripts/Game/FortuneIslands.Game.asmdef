@@ -1,0 +1,23 @@
+{
+    "name": "FortuneIslands.Game",
+    "rootNamespace": "FortuneIslands.Game",
+    "references": [
+        "FortuneIslands.Core",
+        "FortuneIslands.Economy",
+        "FortuneIslands.Map",
+        "FortuneIslands.Units",
+        "FortuneIslands.Building",
+        "FortuneIslands.UI",
+        "FortuneIslands.CameraControl",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
