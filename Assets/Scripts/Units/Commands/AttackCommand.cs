@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace FortuneIslands.Units.Commands
 {
     public class AttackCommand : IUnitCommand

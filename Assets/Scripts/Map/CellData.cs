@@ -2,7 +2,6 @@ using UnityEngine;
 using FortuneIslands.Core;
 
 using FortuneIslands.Map.Enums;
-using FortuneIslands.Units;
 
 namespace FortuneIslands.Map
 {
@@ -15,7 +14,7 @@ namespace FortuneIslands.Map
 
         public WorldEntity OccupyingObject;
 
-        public UnitController OccupyingUnit;
+        public IGridOccupant OccupyingUnit;
 
         public bool IsWalkable => Type == CellType.Ground && OccupyingObject == null && OccupyingUnit == null;
         // Bitmask value (0-15) to determine specific mesh rotation/type

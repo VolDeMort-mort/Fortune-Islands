@@ -1,16 +1,12 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 using FortuneIslands.Core;
-using FortuneIslands.Game;
 using FortuneIslands.Map.Generation;
 
 namespace FortuneIslands.Map
 {
-    public class MapManager : BaseManager
+    public class MapManager : MonoBehaviour
     {
-        [Header("UI")]
-
         [Header("Configuration")]
         public Vector2Int mapSize;
         public Transform worldContainer;
@@ -19,15 +15,19 @@ namespace FortuneIslands.Map
 
 
         public WorldMap map;
+        private Transform _worldContainer;
+        private int _ownerId;
+
         private TileService _tileService;
         private BiomeConfig currentBiome;
         private NoiseService _noiseService;
         private MapResourceGenService _resourceGenService;
         private RenderService _renderer;
 
-        public override void Initialize(IslandController controller)
+        public void Initialize(Transform worldContainer, int ownerId)
         {
-            base.Initialize(controller);
+            _worldContainer = worldContainer;
+            _ownerId = ownerId;
 
             map = new WorldMap(mapSize);
             _tileService = new TileService();
@@ -44,7 +44,7 @@ namespace FortuneIslands.Map
             if (availableBiomes.Length > 0)
             {
                 currentBiome = availableBiomes[UnityEngine.Random.Range(0, availableBiomes.Length)];
-                Debug.Log($"Selected Biome: {currentBiome.biomeName}");
+                Log.Info($"Selected Biome: {currentBiome.biomeName}");
             }
             else
             {
@@ -55,7 +55,7 @@ namespace FortuneIslands.Map
             _noiseService.GenerateTerrain(map, mapConfig);
             _tileService.RotateMapTiles(map);
             _resourceGenService.GenerateResourceData(map, currentBiome, mapConfig);
-            _renderer.RenderMap(map, worldContainer, currentBiome, _tileService, island.PlayerID);
+            _renderer.RenderMap(map, worldContainer, currentBiome, _tileService, _ownerId);
         }
     }
 }

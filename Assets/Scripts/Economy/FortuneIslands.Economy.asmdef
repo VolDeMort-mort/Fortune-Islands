@@ -1,0 +1,16 @@
+{
+    "name": "FortuneIslands.Economy",
+    "rootNamespace": "FortuneIslands.Economy",
+    "references": [
+        "FortuneIslands.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

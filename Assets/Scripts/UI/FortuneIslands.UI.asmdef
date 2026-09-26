@@ -1,0 +1,21 @@
+{
+    "name": "FortuneIslands.UI",
+    "rootNamespace": "FortuneIslands.UI",
+    "references": [
+        "FortuneIslands.Core",
+        "FortuneIslands.Economy",
+        "FortuneIslands.Building",
+        "FortuneIslands.Turns",
+        "UnityEngine.UI",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-using FortuneIslands.Resources;
+using FortuneIslands.Economy.Stockpile;
 
 namespace FortuneIslands.Economy
 {
