@@ -3,7 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using FortuneIslands.Building;
+using FortuneIslands.Core;
 using FortuneIslands.Economy.Stockpile;
+using FortuneIslands.Turns;
 
 namespace FortuneIslands.UI
 {
@@ -31,6 +33,19 @@ namespace FortuneIslands.UI
         public Button placeBuilding;
         public List<BuildingTypeBtn> placingBtns;
 
+        [Header("Turns")]
+        public TurnHud turnHud;
+
+        public void BindTurns(TurnController turns, int localPlayerId)
+        {
+            if (turnHud == null)
+            {
+                Log.Warning("UIController: Turn Hud is not assigned, so the local player cannot press Ready.");
+                return;
+            }
+
+            turnHud.Bind(turns, localPlayerId);
+        }
 
         public void Initialize(ResourceManager resources, BuildingManager buildings)
         {

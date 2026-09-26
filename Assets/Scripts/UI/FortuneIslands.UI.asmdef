@@ -5,6 +5,7 @@
         "FortuneIslands.Core",
         "FortuneIslands.Economy",
         "FortuneIslands.Building",
+        "FortuneIslands.Turns",
         "UnityEngine.UI",
         "Unity.TextMeshPro"
     ],
