@@ -9,12 +9,9 @@ namespace FortuneIslands.Economy
 {
     public class DiceManager : MonoBehaviour
     {
-        [ContextMenu("DEBUG Roll")] 
-        private void DebugRoll() => PerformRoll();
-
         // Event: Sends the list of faces we rolled (for UI to display icons)
         public event Action<List<DiceFace>> OnDiceRolled;
-        private readonly List<IDiceSource>_sources = new List<IDiceSource>();
+        private readonly List<IDiceSource> _sources = new List<IDiceSource>();
 
         private ResourceManager _resources;
 
