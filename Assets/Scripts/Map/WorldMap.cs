@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+using FortuneIslands.Core;
 using FortuneIslands.Map.Enums;
 
 namespace FortuneIslands.Map
@@ -97,7 +98,7 @@ namespace FortuneIslands.Map
                 }
             }
 
-            Debug.Log($"Curr placed obj: {str}");
+            Log.Info($"Curr placed obj: {str}");
         }
     }
 }

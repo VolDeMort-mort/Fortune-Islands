@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+using FortuneIslands.Core;
 using FortuneIslands.CameraControl;
 using FortuneIslands.Game.GameStates;
 using FortuneIslands.UI;
@@ -41,7 +42,7 @@ namespace FortuneIslands.Game
 
         public void StartSinglePlayerGame()
         {
-            Debug.Log("Starting Single Player...");
+            Log.Info("Starting Single Player...");
 
             ClearOldGame();
 
@@ -64,7 +65,7 @@ namespace FortuneIslands.Game
             if (id == 0)
             {
                 if (mainCamera != null) mainCamera.FocusOnTarget(obj.transform.position);
-                if (uiController != null) uiController.Initialize(island);
+                if (uiController != null) uiController.Initialize(island.resourceManager, island.buildManager);
             }
         }
 

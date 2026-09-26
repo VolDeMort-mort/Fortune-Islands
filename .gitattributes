@@ -1,0 +1,20 @@
+# Unity serializes assets with LF; keep them LF on every OS to avoid noisy diffs.
+*.unity       text eol=lf
+*.prefab      text eol=lf
+*.asset       text eol=lf
+*.meta        text eol=lf
+*.mat         text eol=lf
+*.anim        text eol=lf
+*.controller  text eol=lf
+*.asmdef      text eol=lf
+*.inputactions text eol=lf
+
+# Binary assets
+*.png  binary
+*.jpg  binary
+*.psd  binary
+*.fbx  binary
+*.ttf  binary
+*.otf  binary
+*.wav  binary
+*.mp3  binary

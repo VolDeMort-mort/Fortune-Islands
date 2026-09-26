@@ -1,8 +1,6 @@
 using UnityEngine;
-using System.Collections;
 
-using FortuneIslands.Resources;
-using FortuneIslands.Game;
+using FortuneIslands.Economy.Stockpile;
 
 namespace FortuneIslands.Building.Effects
 {
@@ -14,12 +12,12 @@ namespace FortuneIslands.Building.Effects
         public int amountPerTick = 10;
         public float timeBetweenTicks = 5f;
 
-        private IslandController _island;
+        private ResourceManager _resources;
         private bool _isActive = false;
 
-        public void Initialize(IslandController island)
+        public void Initialize(BuildingContext ctx)
         {
-            _island = island;
+            _resources = ctx.Resources;
             _isActive = true;
             // StartCoroutine(GenerateRoutine());
         }
@@ -34,7 +32,7 @@ namespace FortuneIslands.Building.Effects
         //         _island.resourceManager.AddResource(resourceType, amountPerTick);
 
         //         // Optional: Pop up UI text here "+10 Gold"
-        //         Debug.Log($"Generated {amountPerTick} {resourceType}");
+        //         Log.Info($"Generated {amountPerTick} {resourceType}");
         //     }
         // }
     }

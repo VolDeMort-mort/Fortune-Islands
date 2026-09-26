@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 using FortuneIslands.Core;
-using FortuneIslands.Resources;
+using FortuneIslands.Economy.Stockpile;
 using FortuneIslands.Map.Enums;
 
 namespace FortuneIslands.Building
@@ -12,13 +12,6 @@ namespace FortuneIslands.Building
     {
         public Vector2Int offset;
         public CellType requiredSurface; // Ground, Water, etc.
-    }
-
-    [System.Serializable]
-    public struct ResourceCost
-    {
-        public ResourceType type;
-        public int amount;
     }
 
     public class Structure : WorldEntity

@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-using FortuneIslands.Game;
 using FortuneIslands.Building;
+using FortuneIslands.Economy.Stockpile;
 
 namespace FortuneIslands.UI
 {
@@ -32,35 +32,24 @@ namespace FortuneIslands.UI
         public List<BuildingTypeBtn> placingBtns;
 
 
-        public void Initialize(IslandController localIsland)
+        public void Initialize(ResourceManager resources, BuildingManager buildings)
         {
 
             if (topPanelGenerator != null)
-                topPanelGenerator.Initialize(localIsland.resourceManager);
+                topPanelGenerator.Initialize(resources);
 
             if (sidePanelGenerator != null)
-                sidePanelGenerator.Initialize(localIsland.resourceManager);
+                sidePanelGenerator.Initialize(resources);
 
             // mainMenuCanvas.SetActive(true);
             // inGameCanvas.SetActive(false);
 
             foreach (var pair in placingBtns)
             {
-                pair.btn.onClick.AddListener(() => { localIsland.buildManager.StartPlacingBuilding(pair.buildingType); });
-                Debug.Log($"{pair.buildingType}");
+                var type = pair.buildingType;
+                pair.btn.onClick.RemoveAllListeners();
+                pair.btn.onClick.AddListener(() => { buildings.StartPlacingBuilding(type); });
             }
         }
-
-        // public void SwitchState(GameState state)
-        // {
-        //     if (state == GameState.InGame) {
-        //         mainMenuCanvas.SetActive(false);
-        //         inGameCanvas.SetActive(true);
-        //     }
-        //     else if (state == GameState.MainMenu) {
-        //         mainMenuCanvas.SetActive(true);
-        //         inGameCanvas.SetActive(false);
-        //     }
-        // }
     }
 }

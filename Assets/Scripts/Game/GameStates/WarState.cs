@@ -1,4 +1,4 @@
-using UnityEngine;
+using FortuneIslands.Core;
 
 namespace FortuneIslands.Game.GameStates
 {
@@ -8,7 +8,7 @@ namespace FortuneIslands.Game.GameStates
 
         public override void Enter()
         {
-            Debug.Log("--- STATE: WAR ---");
+            Log.Info("--- STATE: WAR ---");
 
             foreach (var island in game.AllIslands)
             {
