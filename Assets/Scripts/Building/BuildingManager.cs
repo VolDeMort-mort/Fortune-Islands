@@ -103,6 +103,8 @@ namespace FortuneIslands.Building
 
         public void StartPlacingBuilding(BuildingTypes type)
         {
+            if (!_isActive) return; // building is allowed only in the Build phase
+
             if (_isBuilding) CancelBuilding();
 
             var target = allBuildings.Find(b => b.buildingType == type);
