@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 using FortuneIslands.Building;
 using FortuneIslands.Economy.Stockpile;
-using FortuneIslands.WorldEntities;
 
 namespace FortuneIslands.UI
 {
