@@ -1,7 +1,8 @@
 # Архітектурне ревʼю TestDiceKindoms
 
 > Ревʼю виконано 21.09.2026 (Unity 6000.2.10f1, URP 17.2, Input System 1.14 + legacy Input).
-> Статуси оновлено 26.09.2026 за станом гілки `feature/hardcode-fix` (коміт `47c21da`).
+> Статуси оновлено 26.09.2026 за станом гілки `feature/turn-system`.
+> Система ходу (Етап 2) описана окремо: [TurnSystem.md](TurnSystem.md).
 
 ## Контекст
 
@@ -29,12 +30,15 @@
 |---|---|---|
 | 0 | Гігієна проєкту | 🟡 (лишився вибір Input System) |
 | 0.5 | Розрив циклів залежностей (підготовка до asmdef) | ✅ |
-| 1 | Модель даних (сітка, зайнятість) | 🟡 |
-| 2 | Фази: `TurnController` | ⬜ |
+| 2 | Фази: `TurnController` | ✅ (потрібно підключити HUD у сцені) |
 | 3 | Єдиний інпут | ⬜ |
+| 1 | Модель даних (сітка, зайнятість) | 🟡 |
 | 4 | Юніти й бій | ⬜ |
 | 5 | Рендер | ⬜ |
 | 6 | Економіка | 🟡 |
+
+Порядок виконання змінено на **0 → 0.5 → 2 → 3 → 1 → 4 → 5 → 6**.
+Етап 2 ні від чого не залежить і дає грі робочий цикл. Етап 3 спирається на фази, бо контекст інпуту визначає фаза. Етап 1 потрібен лише перед Етапом 4.
 
 ---
 
@@ -51,7 +55,9 @@
 **Рішення:** один `InputRouter` у сцені, який визначає активний контекст (фаза + локальний гравець) і викликає методи менеджера потрібного острова.
 Менеджери островів стають чистою логікою без `Update` і без `Input`.
 
-### 2. Машина станів фаз не працює ⬜
+### 2. Машина станів фаз не працює ✅
+
+> Виправлено в Етапі 2: `TurnController` у чистій асемблі `FortuneIslands.Turns`, обробники фаз `Game/Phases`, HUD. Опис: [TurnSystem.md](TurnSystem.md).
 
 - `GameState.Update()` ніколи не викликається: у `GameManager` немає `Update()`.
 - `RollState` не запускається ніколи. Єдиний перехід у грі: кнопка назавжди привʼязана до `warState`.
@@ -162,9 +168,10 @@
 ### 14. Синглтон і підписки без відписок 🟡
 
 - ✅ `UIController.Initialize` викликає `RemoveAllListeners()` перед додаванням слухачів (перезапуск гри більше не дублює їх).
-- ⬜ `GameManager.Instance = this` без перевірки дубля.
-- ⬜ `ClearOldGame` знищує острови, але не ресетить FSM.
-- ⬜ Немає `OnDestroy` з відпискою в `GameManager` і `MainMenuController`.
+- ✅ `GameManager.Instance` відхиляє другий екземпляр і обнуляється в `OnDestroy`.
+- ✅ `ClearOldGame` зупиняє цикл ходу: поточна фаза встигає вимкнути свої системи до знищення островів.
+- ✅ `GameManager` відписується від `TurnController` в `OnDestroy`; `TurnHud` відписується сам.
+- ⬜ `MainMenuController` не відписується від кнопок.
 - ⬜ Файл `MenuController.cs` містить клас `MainMenuController`.
 
 ### 15. Мультиплеєр не закладений ⬜
@@ -191,8 +198,9 @@
 
 Весь проєкт був в `Assembly-CSharp`: повна рекомпіляція на кожну правку, немає меж між модулями, тестів нуль (пакет `com.unity.test-framework` підключений).
 
-- ✅ Створено `.asmdef` на кожен модуль (див. додаток А). Файли згенеровано при закритому Unity, тож **компіляцію треба підтвердити при першому відкритті проєкту**.
-- ⬜ Тестова асемблі й перші юніт-тести.
+- ✅ Створено `.asmdef` на кожен модуль (див. додаток А). Компіляцію підтверджено в Unity 26.09.
+- ✅ Тестова асемблі `FortuneIslands.Turns.Tests` (EditMode), 32 тести на цикл ходу.
+- ⬜ Тести для `WorldMap`, `Pathfinding`, `TileService`, `ResourceManager`.
 
 ### 19. Сміття і структура папок 🟡
 
@@ -271,13 +279,18 @@
 - [ ] Сід генерації ззовні (детермінізм і тестованість)
 - [ ] Звести три копії `IsWalkable` в одну
 
-### Етап 2. Фази ⬜
+### Етап 2. Фази ✅
 
-- [ ] `TurnController` з реальним циклом Roll → Build → War, раундами і подіями
+- [x] `TurnController` у чистій асемблі `FortuneIslands.Turns` (без Unity): раунди, фази, таймери, готовність гравців
+- [x] Цикл `Build → Roll`, у кожному 3-му раунді `Build → WarPlanning → WarBattle → Roll`
+- [x] Обробники фаз `Game/Phases` з вузьким `PhaseContext` замість `GameManager`
+- [x] `TurnHud`: раунд, фаза, таймер, кнопка Ready
+- [x] До 10 гравців (`GameManager.playerCount`), острови сіткою
+- [x] Будівництво можна почати лише у фазі Build
+- [x] 32 EditMode-тести
+- [ ] Підключити `TurnHud` у сцені `SampleScene` (кроки в [TurnSystem.md](TurnSystem.md#налаштування-сцени))
 
-Тимчасовий `[ContextMenu("DEBUG Roll")]` у `DiceManager` вже прибрано, тому до появи `TurnController` кидок кубиків у грі перевірити нема як.
-
-Це ядро гри і найшвидший шлях до того, щоб вона стала грою.
+Правила й архітектура: [TurnSystem.md](TurnSystem.md).
 
 ### Етап 3. Інпут ⬜
 
@@ -291,6 +304,8 @@
 - [ ] Один компонент замість `Unit` + `UnitController`, `UnitStats` як джерело істини
 - [ ] Tick-based рух замість корутин
 - [ ] Переписаний A* (купа, пул, bitset), flow field для груп
+- [ ] Планування атак у `WarPlanning`: позначення цілей на чужих островах, доступне лише після будівництва порту
+- [ ] Бій у `WarBattlePhase`: човни пливуть до цілей, фаза завершується через `CompletePhase()`, коли бій розіграно
 
 ### Етап 5. Рендер ⬜
 
@@ -312,13 +327,14 @@
 
 ```
 Core           -> -
+Turns          -> -              (без Unity: noEngineReferences)
 WorldEntities  -> Core
 Economy        -> Core
 Map            -> Core, WorldEntities
 Units          -> Core, Map
 Building       -> Core, Economy, Map, WorldEntities
-UI             -> Core, Economy, Building
-Game           -> Building, CameraControl, Core, Economy, Map, UI, Units
+UI             -> Core, Economy, Building, Turns
+Game           -> Building, CameraControl, Core, Economy, Map, Turns, UI, Units
 Selection      -> Core, Units
 CameraControl  -> -
 ```
@@ -330,24 +346,27 @@ CameraControl  -> -
 | Assembly | Посилання на асембли проєкту | Зовнішні |
 |---|---|---|
 | `FortuneIslands.Core` | нічого | нічого |
+| `FortuneIslands.Turns` | нічого | нічого, навіть UnityEngine (`noEngineReferences`) |
 | `FortuneIslands.WorldEntities` | Core | нічого |
 | `FortuneIslands.Economy` | Core | нічого |
 | `FortuneIslands.Map` | Core, WorldEntities | `Unity.Mathematics` |
 | `FortuneIslands.Units` | Core, Map | нічого |
 | `FortuneIslands.Building` | Core, Economy, Map, WorldEntities | `UnityEngine.UI` (там живе `EventSystem`) |
-| `FortuneIslands.UI` | Core, Economy, Building | `Unity.TextMeshPro`, `UnityEngine.UI` |
+| `FortuneIslands.UI` | Core, Economy, Building, Turns | `Unity.TextMeshPro`, `UnityEngine.UI` |
 | `FortuneIslands.CameraControl` | нічого | нічого |
 | `FortuneIslands.Game` | усі вищі | `UnityEngine.UI` |
+| `FortuneIslands.Turns.Tests` | Turns | `UnityEngine.TestRunner`, `UnityEditor.TestRunner`, `nunit.framework.dll` (лише Editor) |
 
 `Selection` можна лишити без asmdef: скрипти поза asmdef потрапляють в `Assembly-CSharp`, який бачить усі asmdef, а його не бачить ніхто. За планом (Етап 3) цей клас все одно видаляється.
 Після переходу на новий інпут додати `Unity.InputSystem` там, де читається інпут.
 
-Тести: Window → General → Test Runner → Create Test Assembly Folder, з посиланнями на `Core`, `Map`, `Economy`. Тоді `WorldMap`, `Pathfinding`, `TileService`, `ResourceManager` тестуються без сцени.
+Тести лежать в `Assets/Tests/EditMode` (Window → General → Test Runner → EditMode). Наступні кандидати: `WorldMap`, `Pathfinding`, `TileService`, `ResourceManager`. Для них потрібна тестова асемблі з посиланнями на `Core`, `Map`, `Economy`.
 
 ## Що перевірити при наступному відкритті Unity
 
-Зміни від 26.09 зроблено при закритому редакторі, тому компіляцію й поведінку ще ніхто не підтвердив.
+Етап 2 скомпільовано поза редактором (`dotnet build` з тими ж межами асембл і налаштуваннями компілятора, що в Unity), а 32 тести пройшли під NUnit. У самому Unity це ще треба підтвердити.
 
-1. Console без помилок після імпорту. Якщо Unity скаржиться на невідомий тип або цикл між асемблями, бракує посилання в одному з `.asmdef` (додаток А).
-2. У Project window скрипти згруповано за асемблями `FortuneIslands.*`, а `SelectionManager` лишився в `Assembly-CSharp`.
-3. Димова перевірка: генерація обох островів, будівництво з витратою ресурсів і появою воїна, рух юніта у фазі Війни, повторний запуск гри без дублювання кліків по кнопках.
+1. Console без помилок після імпорту.
+2. Test Runner → EditMode → Run All: 32 тести зелені.
+3. Підключити `TurnHud` у сцені ([кроки](TurnSystem.md#налаштування-сцени)).
+4. Димова перевірка: Build → Ready → Roll (ресурси додались, через 5 с новий раунд) → на 3-му раунді WarPlanning з таймером 60 с → Roll. Кнопки будівель не працюють поза Build.
