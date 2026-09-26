@@ -1,5 +1,3 @@
-using UnityEngine;
-
 using FortuneIslands.Core;
 
 namespace FortuneIslands.Game.GameStates
