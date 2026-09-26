@@ -1,0 +1,17 @@
+{
+    "name": "FortuneIslands.Units",
+    "rootNamespace": "FortuneIslands.Units",
+    "references": [
+        "FortuneIslands.Core",
+        "FortuneIslands.Map"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
