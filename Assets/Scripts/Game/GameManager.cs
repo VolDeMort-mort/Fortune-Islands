@@ -13,6 +13,7 @@ namespace FortuneIslands.Game
     // its phases to the phase handlers and the HUD. It holds no turn rules of its own.
     public class GameManager : MonoBehaviour
     {
+        public const int MaxPlayers = 10;
         private const int LocalPlayerId = 0;
 
         public static GameManager Instance { get; private set; }
@@ -21,6 +22,12 @@ namespace FortuneIslands.Game
         public GameObject islandPrefab;
         public CameraController mainCamera;
         public UIController uiController;
+
+        [Header("Players")]
+        [Range(1, MaxPlayers)] public int playerCount = 2;
+
+        [Tooltip("Distance between neighbouring islands. Should be at least the island map size.")]
+        [Min(1f)] public float islandSpacing = 50f;
 
         [Header("Turn rules")]
         public TurnRules turnRules = new TurnRules();
@@ -69,10 +76,19 @@ namespace FortuneIslands.Game
 
             ClearOldGame();
 
-            SpawnIsland(0, Vector3.zero);
-            SpawnIsland(1, new Vector3(50, 0, 0));
+            for (int id = 0; id < playerCount; id++)
+            {
+                SpawnIsland(id, GetIslandPosition(id));
+            }
 
             StartTurns();
+        }
+
+        // Islands form a near-square grid: 2 players sit side by side, 10 players make a 4x3 grid.
+        private Vector3 GetIslandPosition(int index)
+        {
+            int columns = Mathf.CeilToInt(Mathf.Sqrt(playerCount));
+            return new Vector3(index % columns, 0f, index / columns) * islandSpacing;
         }
 
         private void SpawnIsland(int id, Vector3 pos)
